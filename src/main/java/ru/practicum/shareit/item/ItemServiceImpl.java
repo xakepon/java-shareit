@@ -80,7 +80,7 @@ public class ItemServiceImpl implements ItemService {
         List<ItemDto> items = itemStorage.getItemByOwner(owner).stream()
                 .map(itemMapper::toItemDto)
                 .collect(Collectors.toList());
-        log.info("Выполнен метод удаления по владельцу вещи" + "items:{}",
+        log.info("Выполнен метод получнияя ItemDTO по владельцу вещи" + "items:{}",
                 items);
         return items;
     }

@@ -8,11 +8,13 @@ import java.util.*;
 public class UserStorageImpl implements UserStorage {
 
     private final Map<Long, User> users;
+    private final Map<String, User> emailsUsers;
     private Long id;
 
     public UserStorageImpl() {
         id = 0L;
         users = new HashMap<>();
+        emailsUsers = new HashMap<>();
     }
 
     private Long createId() {
@@ -24,6 +26,7 @@ public class UserStorageImpl implements UserStorage {
         Long id = createId();
         user.setId(id);
         users.put(id, user);
+        emailsUsers.put(user.getEmail(), user);
         return user;
     }
 
@@ -34,6 +37,7 @@ public class UserStorageImpl implements UserStorage {
 
     @Override
     public User remove(Long id) {
+        emailsUsers.remove(users.get(id).getEmail());
         return users.remove(id);
     }
 
@@ -54,10 +58,16 @@ public class UserStorageImpl implements UserStorage {
     }
 
     @Override
+    public boolean isContainsEmail(String email) {
+        return emailsUsers.containsKey(email);
+    }
+
+    @Override
     public Optional<Long> getUserByEmail(String email) {
-        return users.values().stream()
+       return emailsUsers.values().stream()
                 .filter(user -> email.equals(user.getEmail()))
                 .map(User::getId)
                 .findFirst();
+
     }
 }

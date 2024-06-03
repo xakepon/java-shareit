@@ -17,6 +17,8 @@ public interface UserStorage {
 
     boolean isContains(Long user);
 
+    boolean isContainsEmail(String email);
+
     Optional<Long> getUserByEmail(String email);
 
 }

@@ -5,7 +5,7 @@ import ru.practicum.shareit.item.dto.ItemDto;
 import ru.practicum.shareit.item.model.Item;
 
 @Component
-public class ItemMapper {
+public final class ItemMapper {
     public ItemDto toItemDto(Item item) {
         return item == null ? null : ItemDto.builder()
                 .id(item.getId())

@@ -40,12 +40,14 @@ public class UserServiceImpl implements UserService {
         if (userToUpdate == null) {
             throw new NotFoundException("Пользовтель не найден, обновление не произведено");
         }
-        userStorage.getUsers().stream()
+        /*userStorage.getUsers().stream()
                 .filter(u -> !u.getId().equals(userId) && u.getEmail().equals(userDto.getEmail()))
                 .findFirst()
                 .ifPresent(user -> {
                     throw new ExistingCopyException("Электронная почта уже используется!");
-                });
+                });*/
+        if (!userStorage.isContains(userId) && userStorage.isContainsEmail(userDto.getEmail())) {throw new NotFoundException("Электронная почта уже используется!"); }
+
         userMapper.updateUserDto(userDto, userToUpdate, userId);
         UserDTO updatedUserDto = userMapper.toUserDto(userStorage.update(userToUpdate));
         return updatedUserDto;

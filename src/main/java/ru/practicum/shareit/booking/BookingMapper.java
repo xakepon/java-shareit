@@ -2,7 +2,7 @@ package ru.practicum.shareit.booking;
 
 import ru.practicum.shareit.booking.dto.BookingDto;
 
-public class BookingMapper {
+public final class BookingMapper {
     public BookingDto toBookingDto(Booking booking) {
         return booking == null ? null : BookingDto.builder()
                 .start(booking.getStart())
