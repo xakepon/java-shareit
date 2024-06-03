@@ -46,7 +46,7 @@ public class UserServiceImpl implements UserService {
                 .ifPresent(user -> {
                     throw new ExistingCopyException("Электронная почта уже используется!");
                 });*/
-        if (!userStorage.isContains(userId) && userStorage.isContainsEmail(userDto.getEmail())) {throw new NotFoundException("Электронная почта уже используется!"); }
+        if (userStorage.isContainsEmail(userDto.getEmail())) {throw new NotFoundException("Электронная почта уже используется!"); }
 
         userMapper.updateUserDto(userDto, userToUpdate, userId);
         UserDTO updatedUserDto = userMapper.toUserDto(userStorage.update(userToUpdate));
