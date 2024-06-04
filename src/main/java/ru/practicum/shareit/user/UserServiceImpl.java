@@ -8,6 +8,7 @@ import ru.practicum.shareit.exception.NotFoundException;
 
 import javax.validation.ValidationException;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
@@ -40,13 +41,17 @@ public class UserServiceImpl implements UserService {
         if (userToUpdate == null) {
             throw new NotFoundException("Пользовтель не найден, обновление не произведено");
         }
-        /*userStorage.getUsers().stream()
+        userStorage.getUsers().stream()
                 .filter(u -> !u.getId().equals(userId) && u.getEmail().equals(userDto.getEmail()))
                 .findFirst()
                 .ifPresent(user -> {
                     throw new ExistingCopyException("Электронная почта уже используется!");
-                });*/
-        if (userStorage.isContainsEmail(userDto.getEmail())) {throw new NotFoundException("Электронная почта уже используется!"); }
+                });
+        /* userStorage.getUserByEmail(userDto.getEmail())
+                .filter(user -> !(Objects.equals(userDto.getId(), user)))
+                .ifPresent(user -> {
+                            throw new ExistingCopyException("Электронная почта уже используется!");
+                        });*/
 
         userMapper.updateUserDto(userDto, userToUpdate, userId);
         UserDTO updatedUserDto = userMapper.toUserDto(userStorage.update(userToUpdate));
