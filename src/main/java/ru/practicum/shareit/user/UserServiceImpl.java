@@ -8,7 +8,6 @@ import ru.practicum.shareit.exception.NotFoundException;
 
 import javax.validation.ValidationException;
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
