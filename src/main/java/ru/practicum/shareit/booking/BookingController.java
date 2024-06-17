@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.shareit.booking.dto.BookingDto;
+import ru.practicum.shareit.booking.dto.InputBookingDTO;
 
 import java.util.List;
 
@@ -42,7 +43,7 @@ public class BookingController {
     }
 
     @PostMapping
-    public BookingDto createBooking(@Validated @RequestBody InputBookingDto inputBookingDto,
+    public BookingDto createBooking(@Validated @RequestBody InputBookingDTO inputBookingDto,
                                     @RequestHeader(OWNER_ID) Long userId) {
         log.info("Post-request createBooking: userId{}, bookingDto{}", userId, inputBookingDto);
         return service.create(inputBookingDto, userId);

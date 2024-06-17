@@ -32,7 +32,7 @@ public final class BookingMapper {
         return inputBookingDto == null ? null : Booking.builder()
                 .start(inputBookingDto.getStart())
                 .end(inputBookingDto.getEnd())
-                .item(itemMapper.toItem(itemDTO))
+                .item(itemMapper.toItem(itemDto))
                 .booker(userMapper.toUser(userDto))
                 .status(BookingStatus.WAITING)
                 .build();
