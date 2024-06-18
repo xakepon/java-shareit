@@ -135,7 +135,7 @@ public class BookingServiceImpl implements BookingService {
                         userId, state, rejectedList);
                 return rejectedList;
             default:
-                throw new InvalidStateException("Ошибка - неизвестное состояние бронирования от пользователя: " + state);
+                throw new InvalidStateException("Unknown state: " + state);
         }
     }
 
@@ -181,7 +181,7 @@ public class BookingServiceImpl implements BookingService {
                         ownerId, state, rejectedList);
                 return rejectedList;
             default:
-                throw new InvalidStateException("Ошибка - неизвестное состояние бронирования от владельца: " + state);
+                throw new InvalidStateException("Unknown state: " + state);
         }
     }
 
