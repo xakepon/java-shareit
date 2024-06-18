@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import ru.practicum.shareit.booking.Booking;
+import ru.practicum.shareit.item.comment.CommentDTO;
 import ru.practicum.shareit.request.ItemRequest;
 import ru.practicum.shareit.user.User;
 
@@ -50,5 +51,5 @@ public class Item {
     private Booking nextBooking;
 
     @Transient
-    private List<CommentDto> comments;
+    private List<CommentDTO> comments;
 }

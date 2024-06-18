@@ -5,9 +5,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import ru.practicum.shareit.booking.dto.BookingDto;
 import ru.practicum.shareit.booking.dto.InputBookingDTO;
+import ru.practicum.shareit.exception.InvalidStateException;
 import ru.practicum.shareit.exception.NotFoundException;
 import ru.practicum.shareit.item.ItemService;
 import ru.practicum.shareit.item.dto.ItemDto;
+import ru.practicum.shareit.user.UserDTO;
 import ru.practicum.shareit.user.UserService;
 
 import javax.transaction.Transactional;
@@ -38,7 +40,7 @@ public class BookingServiceImpl implements BookingService {
             throw new NotFoundException("fail: owner can not be a booker!");
         }
 
-        UserDto userDto = userService.getById(bookerId);
+        UserDTO userDto = userService.get(bookerId);
         Booking booking = bookingMapper.toBooking(inputBookingDto, userDto, itemDto);
         if (!booking.getItem().getAvailable()) {
             throw new ValidationException("fail: item cannot be booked!");
@@ -53,7 +55,7 @@ public class BookingServiceImpl implements BookingService {
 
     @Override
     public BookingDto approve(Long userId, Long bookingId, Boolean isApproved) {
-        userService.getById(userId);
+        userService.get(userId);
 
         Booking booking = repository.findById(bookingId)
                 .orElseThrow(() -> new NotFoundException("fail: bookingId Not Found!"));
@@ -93,7 +95,7 @@ public class BookingServiceImpl implements BookingService {
 
     @Override
     public List<BookingDto> getAllUserBookings(Long userId, String state) {
-        userService.getById(userId);
+        userService.get(userId);
         validateState(state);
 
         switch (BookingState.valueOf(state)) {
@@ -139,7 +141,7 @@ public class BookingServiceImpl implements BookingService {
 
     @Override
     public List<BookingDto> getAllOwnerBookings(Long ownerId, String state) {
-        userService.getById(ownerId);
+        userService.get(ownerId);
         validateState(state);
 
         switch (BookingState.valueOf(state)) {

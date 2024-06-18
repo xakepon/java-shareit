@@ -2,6 +2,7 @@ package ru.practicum.shareit.item.dto;
 
 import lombok.*;
 import ru.practicum.shareit.booking.dto.ShortBookingDTO;
+import ru.practicum.shareit.item.comment.CommentDTO;
 import ru.practicum.shareit.user.User;
 
 import javax.validation.constraints.NotBlank;
@@ -36,5 +37,5 @@ public class ItemDto {
 
     private User owner;
 
-    private List<CommentDto> comments;
+    private List<CommentDTO> comments;
 }

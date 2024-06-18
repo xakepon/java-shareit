@@ -30,14 +30,12 @@ public class UserController {
         return userService.getUsers();
     }
 
-    @ResponseBody
     @PostMapping
     public UserDTO addItem(@Validated @RequestBody UserDTO userDTO) {
         log.info("Выполнен запрос на создание Item userDto {}", userDTO);
         return userService.add(userDTO);
     }
 
-    @ResponseBody
     @PatchMapping("/{userId}")
     public UserDTO update(@RequestBody UserDTO userDTO, @PathVariable Long userId) {
         log.info("Выполнен запрос на обновление UserDTO по userID {}, userDto {}", userId, userDTO);
