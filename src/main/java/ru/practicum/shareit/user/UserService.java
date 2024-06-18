@@ -6,8 +6,6 @@ public interface UserService {
 
     UserDTO add(UserDTO userDto);
 
-    //UserDTO update(UserDTO userDto, Long id);
-
     void remove(Long userId);
 
     UserDTO get(Long userId);

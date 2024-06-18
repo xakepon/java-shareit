@@ -49,7 +49,7 @@ public class ItemServiceImpl implements ItemService {
         repository.save(createdItem);
 
         ItemDto createdItemDto = itemMapper.toItemDto(createdItem);
-        log.info("method: create |Request/Response|" + " itemDto:{}, userId:{} / createdItemDto:{}",
+        log.info("выполнен метод create с параметрами" + " itemDto:{}, userId:{} / createdItemDto:{}",
                 itemDto, userId, createdItemDto);
         return createdItemDto;
     }
@@ -59,16 +59,16 @@ public class ItemServiceImpl implements ItemService {
         userService.get(userId);
 
         Item itemToUpdate = repository.findById(itemId)
-                .orElseThrow(() -> new NotFoundException("fail: item Not Found!"));
+                .orElseThrow(() -> new NotFoundException("Ошибка Айтем не найден!"));
 
         if (!itemToUpdate.getOwner().getId().equals(userId)) {
-            throw new ValidationException("fail: ownerId and userId is not equals!");
+            throw new ValidationException("Ошибка не совпадение userId и ownerId !");
         }
         itemMapper.updateItemDto(itemDto, itemToUpdate);
         repository.save(itemToUpdate);
 
         ItemDto updatedItemDto = itemMapper.toItemDto(itemToUpdate);
-        log.info("method: save |Request/Response|" + " itemDto:{}, itemId:{}, userId:{} / createdItemDto:{}",
+        log.info("выполнен метод save с параметрами" + " itemDto:{}, itemId:{}, userId:{} / createdItemDto:{}",
                 itemDto, itemId, userId, updatedItemDto);
         return updatedItemDto;
     }
@@ -86,14 +86,14 @@ public class ItemServiceImpl implements ItemService {
                 .map(commentMapper::toCommentDto)
                 .collect(Collectors.toList());
         itemDto.setComments(comments);
-        log.info("method: getById |Request/Response|" + " itemId:{} , userId:{} / itemDto:{}", itemId, userId, itemDto);
+        log.info("выполнен метод getById с параметрами" + " itemId:{} , userId:{} / itemDto:{}", itemId, userId, itemDto);
         return itemDto;
     }
 
     public ItemDto getById(Long itemId) {
         ItemDto itemDto = itemMapper.toItemDto(repository.findById(itemId)
                 .orElseThrow(() -> new NotFoundException("itemId not Found!")));
-        log.info("method: getById |Request/Response|" + " itemId: {} / itemDto: {}", itemId, itemDto);
+        log.info("выполнен метод getById с параметрами" + " itemId: {} / itemDto: {}", itemId, itemDto);
         return itemDto;
     }
 
@@ -107,7 +107,7 @@ public class ItemServiceImpl implements ItemService {
                 .collect(Collectors.toList());
 
         List<ItemDto> itemDtoList = getItemDtoList(items);
-        log.info("method: getAll |Response|" + " items:{}", itemDtoList);
+        log.info("выполнен метод getAll с параметрами" + " items:{}", itemDtoList);
         return itemDtoList;
     }
 
@@ -121,14 +121,14 @@ public class ItemServiceImpl implements ItemService {
                 .stream()
                 .map(itemMapper::toItemDto)
                 .collect(Collectors.toList());
-        log.info("method: search |Request/Response|" + " text:{} / items:{}", text, items);
+        log.info("выполнен метод search с параметрами" + " text:{} / items:{}", text, items);
         return items;
     }
 
     @Override
     public CommentDTO createComment(Long itemId, Long userId, CommentDTO commentDto) {
         if (commentDto.getText().isEmpty()) {
-            throw new ValidationException("fail: comment is Empty!");
+            throw new ValidationException("Ошибка - отзыв пустой!");
         }
         Item item = getItem(itemId);
         User user = userMapper.toUser(userService.get(userId));
@@ -141,14 +141,14 @@ public class ItemServiceImpl implements ItemService {
         commentService.saveComment(comment);
 
         CommentDTO createdCommentDto = commentMapper.toCommentDto(comment);
-        log.info("method: createComment |Request/Response|" + " itemId:{}, userId:{}, commentDto:{} / createdCommentDto:{}",
+        log.info("выполнен метод createComment с параметрами" + " itemId:{}, userId:{}, commentDto:{} / createdCommentDto:{}",
                 itemId, userId, commentDto, createdCommentDto);
         return createdCommentDto;
     }
 
     private Item getItem(Long itemId) {
         return repository.findById(itemId)
-                .orElseThrow(() -> new NotFoundException("fail: itemId Not Found!"));
+                .orElseThrow(() -> new NotFoundException("Ошибка - номер отзыва не найден!"));
     }
 
     private Booking getLastBooking(LocalDateTime now, List<Booking> bookings) {
@@ -208,7 +208,7 @@ public class ItemServiceImpl implements ItemService {
 
     private void validateBookingExist(Long itemId, Long userId) {
         if (!hasUserBookedAndFinishedTheItem(itemId, userId)) {
-            throw new ValidationException("fail: booking for user and item Not Valid!");
+            throw new ValidationException("Ошибка - бронирование для пользователя и предмета не корректные!");
         }
     }
 

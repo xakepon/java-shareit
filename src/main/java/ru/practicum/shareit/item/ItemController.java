@@ -27,12 +27,6 @@ public class ItemController {
         return itemService.getItemById(itemId, userId);
     }
 
-    /*@GetMapping
-    public List<ItemDto> getItemForUser(@RequestHeader(OWNER_ID) Long userId) {
-        log.info("Получен запрос на Item у userId {}", userId);
-       return itemService.getItemByOwner(userId);
-    }*/
-
     @GetMapping("/search")
     public List<ItemDto> getItemSearch(@RequestParam String text) {
         log.info("Получен запрос на поиск по тексту Item {}", text);
@@ -45,17 +39,11 @@ public class ItemController {
         return itemService.create(itemDto, userId);
     }
 
-    /*@PostMapping("/{itemId}")
-    public ItemDto deleteItem(@PathVariable Long itemId, @RequestHeader(OWNER_ID) Long userId) {
-        log.info("Запрос на удаление Item userId {}, itemId {}", userId, itemId);
-        return itemService.delete(itemId, userId);
-    }*/
-
     @PatchMapping("/{itemId}")
     public ItemDto updateItem(@RequestBody ItemDto itemDto,
                               @PathVariable Long itemId,
                               @RequestHeader(OWNER_ID) Long userId) {
-        log.info("Patch-request update: userId {}, itemId {}, itemDto {}", userId, itemId, itemDto);
+        log.info("Сделан запрос на обновление Айтема с параметрами userId {}, itemId {}, itemDto {}", userId, itemId, itemDto);
         return itemService.save(itemDto, itemId, userId);
     }
 
@@ -69,7 +57,7 @@ public class ItemController {
 
     @GetMapping
     public List<ItemDto> getAllItems(@RequestHeader(OWNER_ID) Long userId) {
-        log.info("Get-request getAllItems: userId {}", userId);
+        log.info("Сделан запрос на получение всех Айтемов у пользователя userId {}", userId);
         return itemService.getAll(userId);
     }
 }
