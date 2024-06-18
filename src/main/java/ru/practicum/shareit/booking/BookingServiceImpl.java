@@ -195,7 +195,7 @@ public class BookingServiceImpl implements BookingService {
         try {
             BookingState.valueOf(state.toUpperCase());
         } catch (IllegalArgumentException e) {
-            throw new InvalidStateException("Ошибка - неизвестное состояние бронирования при валидации: " + state);
+            throw new InvalidStateException("Unknown state: " + state);
         }
     }
 }
