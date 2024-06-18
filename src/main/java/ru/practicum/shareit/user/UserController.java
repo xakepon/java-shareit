@@ -39,12 +39,12 @@ public class UserController {
     @PatchMapping("/{userId}")
     public UserDTO update(@RequestBody UserDTO userDTO, @PathVariable Long userId) {
         log.info("Выполнен запрос на обновление UserDTO по userID {}, userDto {}", userId, userDTO);
-        return userService.update(userDTO, userId);
+        return userService.save(userDTO, userId);
     }
 
     @DeleteMapping("/{userId}")
-    public UserDTO remove(@PathVariable Long userId) {
+    public void remove(@PathVariable Long userId) {
         log.info("Выполнен запрос на создание пользователя userId {}", userId);
-        return userService.remove(userId);
+        userService.remove(userId);
     }
 }
