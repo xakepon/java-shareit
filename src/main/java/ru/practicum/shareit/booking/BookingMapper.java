@@ -10,12 +10,9 @@ import ru.practicum.shareit.item.dto.ItemDto;
 import ru.practicum.shareit.user.UserDTO;
 import ru.practicum.shareit.user.UserMapper;
 
-import java.util.Optional;
-
 @Component
 @AllArgsConstructor
 public final class BookingMapper {
-    //private final UserMapper userMapper;
 
     public BookingDto toBookingDto(Booking booking) {
         return booking == null ? null : BookingDto.builder()
