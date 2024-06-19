@@ -3,6 +3,7 @@ package ru.practicum.shareit.item;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.shareit.booking.BookingMapper;
 import ru.practicum.shareit.booking.BookingRepository;
 import ru.practicum.shareit.exception.NotFoundException;
@@ -17,7 +18,6 @@ import ru.practicum.shareit.user.UserMapper;
 import ru.practicum.shareit.user.UserService;
 import ru.practicum.shareit.booking.*;
 
-import javax.transaction.Transactional;
 import javax.validation.ValidationException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -35,20 +35,20 @@ public class ItemServiceImpl implements ItemService {
     private BookingRepository bookingRepository;
     private UserService userService;
     private CommentService commentService;
-    private UserMapper userMapper;
-    private ItemMapper itemMapper;
-    private CommentMapper commentMapper;
+    //private UserMapper userMapper;
+    //private ItemMapper itemMapper;
+    //private CommentMapper commentMapper;
     private BookingMapper bookingMapper;
 
     @Override
     public ItemDto create(ItemDto itemDto, Long userId) {
-        User user = userMapper.toUser(userService.get(userId));
-        Item createdItem = itemMapper.toItem(itemDto);
+        User user = UserMapper.toUser(userService.get(userId));
+        Item createdItem = ItemMapper.toItem(itemDto);
         createdItem.setOwner(user);
         createdItem.setComments(Collections.emptyList());
         repository.save(createdItem);
 
-        ItemDto createdItemDto = itemMapper.toItemDto(createdItem);
+        ItemDto createdItemDto = ItemMapper.toItemDto(createdItem);
         log.info("выполнен метод create с параметрами" + " itemDto:{}, userId:{} / createdItemDto:{}",
                 itemDto, userId, createdItemDto);
         return createdItemDto;
@@ -64,44 +64,47 @@ public class ItemServiceImpl implements ItemService {
         if (!itemToUpdate.getOwner().getId().equals(userId)) {
             throw new ValidationException("Ошибка не совпадение userId и ownerId !");
         }
-        itemMapper.updateItemDto(itemDto, itemToUpdate);
+        ItemMapper.updateItemDto(itemDto, itemToUpdate);
         repository.save(itemToUpdate);
 
-        ItemDto updatedItemDto = itemMapper.toItemDto(itemToUpdate);
+        ItemDto updatedItemDto = ItemMapper.toItemDto(itemToUpdate);
         log.info("выполнен метод save с параметрами" + " itemDto:{}, itemId:{}, userId:{} / createdItemDto:{}",
                 itemDto, itemId, userId, updatedItemDto);
         return updatedItemDto;
     }
 
     @Override
+    @Transactional(readOnly = true)
     public ItemDto getItemById(Long itemId, Long userId) {
         Item item = getItem(itemId);
-        ItemDto itemDto = itemMapper.toItemDto(item);
+        ItemDto itemDto = ItemMapper.toItemDto(item);
         if (item.getOwner().getId().equals(userId)) {
             updateBooking(itemDto);
         }
 
         List<CommentDTO> comments = commentService.getAllComments(item.getId())
                 .stream()
-                .map(commentMapper::toCommentDto)
+                .map(CommentMapper::toCommentDto)
                 .collect(Collectors.toList());
         itemDto.setComments(comments);
         log.info("выполнен метод getById с параметрами" + " itemId:{} , userId:{} / itemDto:{}", itemId, userId, itemDto);
         return itemDto;
     }
 
+    @Transactional(readOnly = true)
     public ItemDto getById(Long itemId) {
-        ItemDto itemDto = itemMapper.toItemDto(repository.findById(itemId)
+        ItemDto itemDto = ItemMapper.toItemDto(repository.findById(itemId)
                 .orElseThrow(() -> new NotFoundException("itemId not Found!")));
         log.info("выполнен метод getById с параметрами" + " itemId: {} / itemDto: {}", itemId, itemDto);
         return itemDto;
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<ItemDto> getAll(Long owner) {
         List<ItemDto> items = repository.findAllByOwnerId(owner)
                 .stream()
-                .map(itemMapper::toItemDto)
+                .map(ItemMapper::toItemDto)
                 .map(this::updateBooking)
                 .map(this::addItemComments)
                 .collect(Collectors.toList());
@@ -112,6 +115,7 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<ItemDto> search(String text) {
         if (text == null || text.isBlank()) {
             return Collections.emptyList();
@@ -119,7 +123,7 @@ public class ItemServiceImpl implements ItemService {
 
         List<ItemDto> items = repository.searchItems(text)
                 .stream()
-                .map(itemMapper::toItemDto)
+                .map(ItemMapper::toItemDto)
                 .collect(Collectors.toList());
         log.info("выполнен метод search с параметрами" + " text:{} / items:{}", text, items);
         return items;
@@ -131,16 +135,16 @@ public class ItemServiceImpl implements ItemService {
             throw new ValidationException("Ошибка - отзыв пустой!");
         }
         Item item = getItem(itemId);
-        User user = userMapper.toUser(userService.get(userId));
+        User user = UserMapper.toUser(userService.get(userId));
         validateBookingExist(itemId, userId);
 
-        Comment comment = commentMapper.toComment(commentDto);
+        Comment comment = CommentMapper.toComment(commentDto);
         comment.setItem(item);
         comment.setAuthor(user);
         comment.setCreated(LocalDateTime.now());
         commentService.saveComment(comment);
 
-        CommentDTO createdCommentDto = commentMapper.toCommentDto(comment);
+        CommentDTO createdCommentDto = CommentMapper.toCommentDto(comment);
         log.info("выполнен метод createComment с параметрами" + " itemId:{}, userId:{}, commentDto:{} / createdCommentDto:{}",
                 itemId, userId, commentDto, createdCommentDto);
         return createdCommentDto;
@@ -202,7 +206,7 @@ public class ItemServiceImpl implements ItemService {
 
     private List<CommentDTO> getCommentDtoList(List<Comment> comments) {
         return comments.stream()
-                .map(commentMapper::toCommentDto)
+                .map(CommentMapper::toCommentDto)
                 .collect(Collectors.toList());
     }
 

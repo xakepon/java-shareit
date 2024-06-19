@@ -6,11 +6,9 @@ import ru.practicum.shareit.request.dto.ItemRequestDto;
 import ru.practicum.shareit.user.UserMapper;
 import ru.practicum.shareit.user.UserService;
 
-@Component
 @AllArgsConstructor
 public final class ItemRequestMapper {
     private UserService userService;
-    private UserMapper userMapper;
 
     public ItemRequestDto toItemRequestDto(ItemRequest itemRequest, Long userId) {
         return itemRequest == null ? null : ItemRequestDto.builder()
@@ -24,7 +22,7 @@ public final class ItemRequestMapper {
         return itemRequestDto == null ? null : ItemRequest.builder()
                 .id(itemRequestDto.getId())
                 .description(itemRequestDto.getDescription())
-                .requestor(userMapper.toUser(itemRequestDto.getRequestor()))
+                .requestor(UserMapper.toUser(itemRequestDto.getRequestor()))
                 .created(itemRequestDto.getCreated())
                 .build();
     }

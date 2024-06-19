@@ -3,6 +3,7 @@ package ru.practicum.shareit.booking;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.shareit.booking.dto.BookingDto;
 import ru.practicum.shareit.booking.dto.InputBookingDTO;
 import ru.practicum.shareit.exception.InvalidStateException;
@@ -12,16 +13,16 @@ import ru.practicum.shareit.item.dto.ItemDto;
 import ru.practicum.shareit.user.UserDTO;
 import ru.practicum.shareit.user.UserService;
 
-import javax.transaction.Transactional;
 import javax.validation.ValidationException;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Slf4j
 @Service
-@AllArgsConstructor
 @Transactional
+@AllArgsConstructor
 public class BookingServiceImpl implements BookingService {
     private final BookingRepository repository;
     private final ItemService itemService;
@@ -79,9 +80,10 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public BookingDto getById(Long userId, Long bookingId) {
         Booking booking = repository.findById(bookingId)
-                .orElseThrow(() -> new NotFoundException("Ошибка - номер бронирования не найден!"));
+               .orElseThrow(() -> new NotFoundException("Ошибка - номер бронирования не найден!"));
 
         if (!(booking.getBooker().getId().equals(userId) || booking.getItem().getOwner().getId().equals(userId))) {
             throw new NotFoundException("Ошибка userId не равен bookingId или не равен OwnerId!");
@@ -94,6 +96,7 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<BookingDto> getAllUserBookings(Long userId, String state) {
         userService.get(userId);
         validateState(state);
@@ -140,6 +143,7 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<BookingDto> getAllOwnerBookings(Long ownerId, String state) {
         userService.get(ownerId);
         validateState(state);

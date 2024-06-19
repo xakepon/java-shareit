@@ -3,9 +3,9 @@ package ru.practicum.shareit.item.comment;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.shareit.exception.NotFoundException;
 
-import javax.transaction.Transactional;
 import java.util.List;
 
 @Slf4j
@@ -16,6 +16,7 @@ public class CommentServiceImpl implements CommentService {
     private final CommentRepository commentRepository;
 
     @Override
+    @Transactional(readOnly = true)
     public List<Comment> getAllCreatedComments(Long itemId) {
         List<Comment> comments = commentRepository.findAllByItemIdOrderByCreatedDesc(itemId);
         log.info("Выполнение метода getAllCreatedComments с параметрами" + "itemDtoId:{} / comments:{}", itemId, comments);
@@ -23,6 +24,7 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<Comment> getAllComments(Long itemId) {
         if (itemId == null) {
             throw new NotFoundException("fail: ItemId Not Found");

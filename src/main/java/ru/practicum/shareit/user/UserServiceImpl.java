@@ -3,10 +3,10 @@ package ru.practicum.shareit.user;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.shareit.exception.AlreadyExistsException;
 import ru.practicum.shareit.exception.NotFoundException;
 
-import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -17,11 +17,11 @@ import java.util.stream.Collectors;
 @Transactional
 public class UserServiceImpl implements UserService {
     private UserRepository repository;
-    private UserMapper userMapper;
 
     @Override
+    @Transactional(readOnly = true)
     public UserDTO get(Long userId) {
-        UserDTO getUserDto = userMapper.toUserDto(repository.findById(userId)
+        UserDTO getUserDto = UserMapper.toUserDto(repository.findById(userId)
                 .orElseThrow(() -> new NotFoundException("fail: user/owner ID Not Found!")));
         log.info("Запрос  {} с данными{}", userId, getUserDto);
         return getUserDto;
@@ -29,8 +29,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDTO add(UserDTO userDto) {
-        User user = repository.save(userMapper.toUser(userDto));
-        UserDTO createdUserDto = userMapper.toUserDto(user);
+        User user = repository.save(UserMapper.toUser(userDto));
+        UserDTO createdUserDto = UserMapper.toUserDto(user);
         log.info("Запрос на создание {} {}",
                 userDto, createdUserDto);
         return createdUserDto;
@@ -38,7 +38,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDTO save(UserDTO userDto, Long userId) {
-        User user = userMapper.toUser(get(userId));
+        User user = UserMapper.toUser(get(userId));
         if (get(userId) == null) {
             throw new NotFoundException("Ошибка - пользователь не найден!");
         }
@@ -46,10 +46,10 @@ public class UserServiceImpl implements UserService {
         if (existingUser.isPresent()) {
             throw new AlreadyExistsException("Ошибка - эл.почта уже используется!");
         }
-        userMapper.updateUserDto(userDto, user);
+        UserMapper.updateUserDto(userDto, user);
         repository.save(user);
 
-        UserDTO updatedUserDto = userMapper.toUserDto(user);
+        UserDTO updatedUserDto = UserMapper.toUserDto(user);
         log.info("выполнен метод save с параметрами" + " userDto:{}, userId:{} / updatedUserDto:{}",
                 userDto, userId, updatedUserDto);
         return updatedUserDto;
@@ -64,7 +64,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<UserDTO> getUsers() {
         List<UserDTO> usersDto = repository.findAll().stream()
-                .map(userMapper::toUserDto)
+                .map(UserMapper::toUserDto)
                 .collect(Collectors.toList());
         log.info("Выполнен метод по запросу всех пользователей из списка{}", usersDto);
         return usersDto;
