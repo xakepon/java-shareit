@@ -1,10 +1,9 @@
 package ru.practicum.shareit.user;
 
-import org.springframework.stereotype.Component;
+import java.util.Optional;
 
-@Component
 public final class UserMapper {
-    public User toUser(UserDTO userDto) {
+    public static User toUser(UserDTO userDto) {
         return userDto == null ? null : User.builder()
                 .id(userDto.getId())
                 .name(userDto.getName())
@@ -12,7 +11,7 @@ public final class UserMapper {
                 .build();
     }
 
-    public UserDTO toUserDto(User user) {
+    public static UserDTO toUserDto(User user) {
         return user == null ? null : UserDTO.builder()
                 .id(user.getId())
                 .name(user.getName())
@@ -20,10 +19,15 @@ public final class UserMapper {
                 .build();
     }
 
-    public void updateUserDto(UserDTO userDto,User userToUpdate,Long userId) {
-        userToUpdate.setEmail(userDto.getEmail() != null && !userDto.getEmail().isEmpty()
-                && userDto.getEmail().contains("@") ? userDto.getEmail() : userToUpdate.getEmail());
-        userToUpdate.setName(userDto.getName() != null
-                && !userDto.getName().isEmpty() ? userDto.getName() : userToUpdate.getName());
+    public static void updateUserDto(UserDTO userDto, User userToUpdate) {
+        String updatedEmail = Optional.ofNullable(userDto.getEmail())
+                .filter(email -> email.contains("@"))
+                .orElse(userToUpdate.getEmail());
+        userToUpdate.setEmail(updatedEmail);
+
+        String updatedName = Optional.ofNullable(userDto.getName())
+                .filter(name -> !name.isEmpty())
+                .orElse(userToUpdate.getName());
+        userToUpdate.setName(updatedName);
     }
 }

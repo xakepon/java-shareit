@@ -1,23 +1,41 @@
 package ru.practicum.shareit.item.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
+import lombok.*;
+import ru.practicum.shareit.booking.dto.ShortBookingDTO;
+import ru.practicum.shareit.item.comment.CommentDTO;
+import ru.practicum.shareit.user.User;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import java.util.List;
 
 /**
  * TODO Sprint add-controllers.
  */
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
+@NoArgsConstructor
 @Builder
 public class ItemDto {
     private Long id;
+
     @NotBlank
     private String name;
+
     @NotBlank
     private String description;
+
+    @NotNull
     private Boolean available;
+
     private Long request;
+
+    private ShortBookingDTO lastBooking;
+
+    private ShortBookingDTO nextBooking;
+
+    private User owner;
+
+    private List<CommentDTO> comments;
 }
