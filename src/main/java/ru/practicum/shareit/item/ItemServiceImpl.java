@@ -44,7 +44,7 @@ public class ItemServiceImpl implements ItemService {
     private BookingMapper bookingMapper;
 
     @Override
-    public ItemDto create(ItemDto itemDto, Long userId) {//
+    public ItemDto create(ItemDto itemDto, Long userId) {
         User user = UserMapper.toUser(userService.get(userId));
         ItemRequest itemRequest = itemDto.getRequestId() != null ? getItemRequest(itemDto) : null;
 
@@ -234,7 +234,7 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public ItemRequest getItemRequest(ItemDto itemDto) {//
+    public ItemRequest getItemRequest(ItemDto itemDto) {
         return itemRequestRepository.findById(itemDto.getRequestId())
                 .orElseThrow(() -> new NotFoundException("Ошибка itemRequestId не найден!"));
     }

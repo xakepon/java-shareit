@@ -6,7 +6,6 @@ import ru.practicum.shareit.item.ItemMapper;
 import ru.practicum.shareit.item.dto.ItemDto;
 import ru.practicum.shareit.request.dto.ItemRequestDto;
 import ru.practicum.shareit.user.UserMapper;
-import ru.practicum.shareit.user.UserService;
 
 import java.util.Collections;
 import java.util.List;
