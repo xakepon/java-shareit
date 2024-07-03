@@ -12,6 +12,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Builder
 public class InputBookingDTO {
+
     @NotNull
     private Long itemId;
 

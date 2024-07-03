@@ -2,26 +2,30 @@ package ru.practicum.shareit.booking;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.shareit.booking.dto.BookingDto;
 import ru.practicum.shareit.booking.dto.InputBookingDTO;
 import ru.practicum.shareit.exception.InvalidStateException;
 import ru.practicum.shareit.exception.NotFoundException;
+import ru.practicum.shareit.exception.ValidationException;
 import ru.practicum.shareit.item.ItemService;
 import ru.practicum.shareit.item.dto.ItemDto;
 import ru.practicum.shareit.user.UserDTO;
 import ru.practicum.shareit.user.UserService;
 
-import javax.validation.ValidationException;
+
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Slf4j
 @Service
-@Transactional
 @AllArgsConstructor
+@Transactional
 public class BookingServiceImpl implements BookingService {
     private final BookingRepository repository;
     private final ItemService itemService;
@@ -40,17 +44,17 @@ public class BookingServiceImpl implements BookingService {
             throw new NotFoundException("Ошибка - владелец не может быть бронирующим!");
         }
 
+        if (!itemDto.getAvailable()) {
+            throw new ValidationException("Ошибка - item не может быть забронирован!");
+        }
+
         UserDTO userDto = userService.get(bookerId);
         Booking booking = bookingMapper.toBooking(inputBookingDto, userDto, itemDto);
-        if (!booking.getItem().getAvailable()) {
-            throw new ValidationException("Ошибка - item не может быть заброирован !");
-        }
-        repository.save(booking);
-
-        BookingDto createdBookingDto = bookingMapper.toBookingDto(booking);
+        Booking savedBooking = repository.save(booking);
+        BookingDto createdBookingDto = bookingMapper.toBookingDto(savedBooking);
         log.info("Выполнен метод createBooking с данными" + " inputBookingDto:{}, bookerId:{} /" +
                 " createdBookingDto:{}", inputBookingDto, bookerId, createdBookingDto);
-        return bookingMapper.toBookingDto(repository.save(booking));
+        return bookingMapper.toBookingDto(savedBooking);
     }
 
     @Override
@@ -96,43 +100,45 @@ public class BookingServiceImpl implements BookingService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<BookingDto> getAllUserBookings(Long userId, String state) {
+    public List<BookingDto> getAllUserBookings(Long userId, String state, int from, int size) {
         userService.get(userId);
         validateState(state);
+        int page = from / size;
+        Pageable pageRequest = PageRequest.of(page, size);
 
         switch (BookingState.valueOf(state)) {
             case ALL:
-                List<BookingDto> allList = getBookingDtoList(repository.findByBookerIdOrderByStartDesc(userId));
+                List<BookingDto> allList = getBookingDtoList(repository.findByBookerIdOrderByStartDesc(userId, pageRequest));
                 log.info("выполнен метод getAllUserBookings с параметрами" + " userId={}, state={} / list={}",
                         userId, state, allList);
                 return allList;
             case CURRENT:
                 List<BookingDto> currentList = getBookingDtoList(repository.findByBookerIdAndStartIsBeforeAndEndIsAfterOrderByStartDesc(
-                        userId, LocalDateTime.now(), LocalDateTime.now()));
+                        userId, LocalDateTime.now(), LocalDateTime.now(), pageRequest));
                 log.info("выполнен метод getAllUserBookings с параметрами" + " userId={}, state={} / list={}",
                         userId, state, currentList);
                 return currentList;
             case PAST:
                 List<BookingDto> pastList = getBookingDtoList(repository.findByBookerIdAndEndIsBeforeOrderByStartDesc(
-                        userId, LocalDateTime.now()));
+                        userId, LocalDateTime.now(), pageRequest));
                 log.info("выполнен метод getAllUserBookings с параметрами" + " userId={}, state={} / list={}",
                         userId, state, pastList);
                 return pastList;
             case FUTURE:
                 List<BookingDto> futureList = getBookingDtoList(repository.findByBookerIdAndStartIsAfterOrderByStartDesc(
-                        userId, LocalDateTime.now()));
+                        userId, LocalDateTime.now(), pageRequest));
                 log.info("выполнен метод getAllUserBookings с параметрами" + " userId={}, state={} / list={}",
                         userId, state, futureList);
                 return futureList;
             case WAITING:
                 List<BookingDto> waitingList = getBookingDtoList(repository.findByBookerIdAndStartIsAfterAndStatusOrderByStartDesc(
-                        userId, LocalDateTime.now(), BookingStatus.WAITING));
+                        userId, LocalDateTime.now(), BookingStatus.WAITING, pageRequest));
                 log.info("выполнен метод getAllUserBookings с параметрами" + " userId={}, state={} / list={}",
                         userId, state, waitingList);
                 return waitingList;
             case REJECTED:
                 List<BookingDto> rejectedList = getBookingDtoList(repository.findByBookerIdAndStatusOrderByStartDesc(
-                        userId, BookingStatus.REJECTED));
+                        userId, BookingStatus.REJECTED, pageRequest));
                 log.info("выполнен метод getAllUserBookings с параметрами" + " userId={}, state={} / list={}",
                         userId, state, rejectedList);
                 return rejectedList;
@@ -143,43 +149,45 @@ public class BookingServiceImpl implements BookingService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<BookingDto> getAllOwnerBookings(Long ownerId, String state) {
+    public List<BookingDto> getAllOwnerBookings(Long ownerId, String state, int from, int size) {
         userService.get(ownerId);
         validateState(state);
+        int pageNumber = from / size;
+        Pageable pageRequest = PageRequest.of(pageNumber, size);
 
         switch (BookingState.valueOf(state)) {
             case ALL:
-                List<BookingDto> allList = getBookingDtoList(repository.findByItemOwnerIdOrderByStartDesc(ownerId));
+                List<BookingDto> allList = getBookingDtoList(repository.findByItemOwnerIdOrderByStartDesc(ownerId, pageRequest));
                 log.info("выполнен метод getAllOwnerBookings с параметрами" + " ownerId={}, state={} / list={}",
                         ownerId, state, allList);
                 return allList;
             case CURRENT:
                 List<BookingDto> currentList = getBookingDtoList(repository.findByItemOwnerIdAndStartIsBeforeAndEndIsAfterOrderByStartDesc(
-                        ownerId, LocalDateTime.now(), LocalDateTime.now()));
+                        ownerId, LocalDateTime.now(), LocalDateTime.now(), pageRequest));
                 log.info("выполнен метод getAllOwnerBookings с параметрами" + " ownerId={}, state={} / list={}",
                         ownerId, state, currentList);
                 return currentList;
             case PAST:
                 List<BookingDto> pastList = getBookingDtoList(repository.findByItemOwnerIdAndEndIsBeforeOrderByStartDesc(
-                        ownerId, LocalDateTime.now()));
+                        ownerId, LocalDateTime.now(), pageRequest));
                 log.info("выполнен метод getAllOwnerBookings с параметрами" + " ownerId={}, state={} / list={}",
                         ownerId, state, pastList);
                 return pastList;
             case FUTURE:
                 List<BookingDto> futureList = getBookingDtoList(repository.findByItemOwnerIdAndStartIsAfterOrderByStartDesc(
-                        ownerId, LocalDateTime.now()));
+                        ownerId, LocalDateTime.now(), pageRequest));
                 log.info("выполнен метод getAllOwnerBookings с параметрами" + " ownerId={}, state={} / list={}",
                         ownerId, state, futureList);
                 return futureList;
             case WAITING:
                 List<BookingDto> waitingList = getBookingDtoList(repository.findByItemOwnerIdAndStartIsAfterAndStatusOrderByStartDesc(
-                        ownerId, LocalDateTime.now(), BookingStatus.WAITING));
+                        ownerId, LocalDateTime.now(), BookingStatus.WAITING, pageRequest));
                 log.info("выполнен метод getAllOwnerBookings с параметрами" + " ownerId={}, state={} / list={}",
                         ownerId, state, waitingList);
                 return waitingList;
             case REJECTED:
                 List<BookingDto> rejectedList = getBookingDtoList(repository.findByItemOwnerIdAndStatusOrderByStartDesc(
-                        ownerId, BookingStatus.REJECTED));
+                        ownerId, BookingStatus.REJECTED, pageRequest));
                 log.info("выполнен метод getAllOwnerBookings с параметрами" + " ownerId={}, state={} / list={}",
                         ownerId, state, rejectedList);
                 return rejectedList;
@@ -188,7 +196,7 @@ public class BookingServiceImpl implements BookingService {
         }
     }
 
-    private List<BookingDto> getBookingDtoList(List<Booking> bookings) {
+    private List<BookingDto> getBookingDtoList(Page<Booking> bookings) {
         return bookings.stream()
                 .map(bookingMapper::toBookingDto)
                 .collect(Collectors.toList());

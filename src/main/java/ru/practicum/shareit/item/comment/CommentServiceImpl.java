@@ -18,6 +18,9 @@ public class CommentServiceImpl implements CommentService {
     @Override
     @Transactional(readOnly = true)
     public List<Comment> getAllCreatedComments(Long itemId) {
+        if (itemId == null) {
+            throw new NotFoundException("Ошибка ItemId не найден");
+        }
         List<Comment> comments = commentRepository.findAllByItemIdOrderByCreatedDesc(itemId);
         log.info("Выполнение метода getAllCreatedComments с параметрами" + "itemDtoId:{} / comments:{}", itemId, comments);
         return comments;
@@ -27,16 +30,16 @@ public class CommentServiceImpl implements CommentService {
     @Transactional(readOnly = true)
     public List<Comment> getAllComments(Long itemId) {
         if (itemId == null) {
-            throw new NotFoundException("fail: ItemId Not Found");
+            throw new NotFoundException("Ошибка ItemId не найден");
         }
         List<Comment> comments = commentRepository.findAllByItemId(itemId);
         log.info("Выполнение метода getAllComments с параметрами" + "itemDtoId:{} / comments:{}", itemId, comments);
         return comments;
     }
 
-    @Override
+   /* @Override
     public void saveComment(Comment comment) {
         commentRepository.save(comment);
-    }
+    }*/
 
 }

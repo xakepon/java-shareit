@@ -30,16 +30,22 @@ public class UserController {
         return userService.getUsers();
     }
 
-    @PostMapping
+    /*@PostMapping
     public UserDTO addItem(@Validated @RequestBody UserDTO userDTO) {
         log.info("Выполнен запрос на создание Item userDto {}", userDTO);
         return userService.add(userDTO);
+    }*/
+
+    @PostMapping
+    public UserDTO createUser(@Validated @RequestBody UserDTO userDto) {
+        log.info("Post-request createItem: userDto {}", userDto);
+        return userService.add(userDto);
     }
 
     @PatchMapping("/{userId}")
     public UserDTO update(@RequestBody UserDTO userDTO, @PathVariable Long userId) {
         log.info("Выполнен запрос на обновление UserDTO по userID {}, userDto {}", userId, userDTO);
-        return userService.save(userDTO, userId);
+        return userService.update(userDTO, userId);
     }
 
     @DeleteMapping("/{userId}")

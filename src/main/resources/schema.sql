@@ -50,5 +50,4 @@ CREATE TABLE IF NOT EXISTS comments (
     CONSTRAINT pk_comment_id PRIMARY KEY (id),
     CONSTRAINT fk_comment_item_id FOREIGN KEY (item_id) REFERENCES items (id) ON DELETE CASCADE,
     CONSTRAINT fk_comment_author_id FOREIGN KEY (author_id) REFERENCES users (id) ON DELETE CASCADE
-
 );
