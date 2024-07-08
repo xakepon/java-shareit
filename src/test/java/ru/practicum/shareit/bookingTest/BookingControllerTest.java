@@ -4,14 +4,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
-import org.mockito.MockedStatic;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-import ru.practicum.shareit.booking.BookingMapper;
 import ru.practicum.shareit.booking.BookingService;
 import ru.practicum.shareit.booking.dto.BookingDto;
 import ru.practicum.shareit.booking.dto.InputBookingDTO;
@@ -49,6 +47,7 @@ public class BookingControllerTest {
     private static final Long ITEM_ID = 10L;
     private static final Long BOOKING_ID = 1L;
     private static final Long WRONG_ID = 10L;
+    private static final String OWNER_ID = "X-Sharer-User-Id";
 
     private InputBookingDTO inputBookingDto;
     private BookingDto bookingDto;
@@ -65,8 +64,8 @@ public class BookingControllerTest {
         bookingDto = BookingDto.builder()
                 .id(BOOKING_ID)
                 .itemId(ITEM_ID)
-                .start(LocalDateTime.of(2024, 06, 24, 14, 00, 00))
-                .end(LocalDateTime.of(2024, 06, 30, 14, 00, 00))
+                .start(LocalDateTime.of(2024, 07, 8, 23, 0, 0))
+                .end(LocalDateTime.of(2024, 07, 10, 14, 00, 00))
                 .item(new ItemDto())
                 .booker(new UserDTO())
                 .status(BookingStatus.WAITING)
@@ -84,12 +83,12 @@ public class BookingControllerTest {
     void postBookings_successfullyCreated() throws Exception {
         when(bookingService.create(any(), anyLong())).thenReturn(bookingDto);
         mvc.perform(post("/bookings")
-                        .header("X-Sharer-User-Id", USER_ID)
+                        .header(OWNER_ID, USER_ID)
                         .content(mapper.writeValueAsString(inputBookingDto))
                         .characterEncoding(StandardCharsets.UTF_8)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isBadRequest())
+                .andExpect(status().isOk())
                 .andReturn()
                 .getResponse()
                 .getContentAsString();
@@ -133,7 +132,7 @@ public class BookingControllerTest {
                         .characterEncoding(StandardCharsets.UTF_8)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(mapper.writeValueAsString(inputBookingDto)))
-                .andExpect(status().isBadRequest())
+                .andExpect(status().isNotFound())
                 .andReturn()
                 .getResponse()
                 .getContentAsString();

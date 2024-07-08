@@ -54,7 +54,8 @@ public class BookingServiceTest {
     private UserService userService;
     //@Mock
     //private BookingMapper bookingMapper;
-    //private MockedStatic<BookingMapper> bookingMapper;
+   //@Mock
+    private MockedStatic<BookingMapper> bookingMapper;
 
     @InjectMocks
     private BookingServiceImpl bookingService;
@@ -63,8 +64,8 @@ public class BookingServiceTest {
    // private ItemMapper itemMapper;
     //@Mock
     //private UserMapper userMapper;
-   // private MockedStatic<ItemMapper> itemMapper;
-    //private MockedStatic<UserMapper> userMapper;
+    private MockedStatic<ItemMapper> itemMapper;
+    private MockedStatic<UserMapper> userMapper;
 
     @Mock
     private ItemRepository itemRepository;
@@ -104,7 +105,7 @@ public class BookingServiceTest {
 
     @Test
     void getById_successfullyGet() {
-        when(BookingMapper.toBookingDto(any())).thenReturn(bookingDto);
+       //when(BookingMapper.toBookingDto(any())).thenReturn(bookingDto);
         when(bookingRepository.findById(anyLong())).thenReturn(Optional.of(booking));
         assertEquals(bookingDto, bookingService.getById(user.getId(), booking.getId()));
         verify(bookingRepository).findById(anyLong());
@@ -162,14 +163,14 @@ public class BookingServiceTest {
                 .itemId(1L)
                 .build();
         Exception exception = assertThrows(ValidationException.class, () -> bookingService.create(bookingBadTime, BOOKER_ID));
-        assertEquals(exception.getMessage(), "fail: invalid booking time!");
+        assertEquals(exception.getMessage(), "Ошибка - неверное время бронирования!");
     }
 
     @Test
     void create_notFoundOwnerNotBooker() {
         when(itemService.getById(any())).thenReturn(itemDto);
         NotFoundException exception = assertThrows(NotFoundException.class, () -> bookingService.create(inputBookingDto, USER_ID), "fail: owner can not be a booker!");
-        assertEquals("fail: owner can not be a booker!", exception.getMessage());
+        assertEquals("Ошибка - владелец не может быть бронирующим!", exception.getMessage());
     }
 
     @Test
@@ -179,7 +180,7 @@ public class BookingServiceTest {
         when(itemService.getItemById(anyLong(), anyLong())).thenReturn(itemDto);
         when(itemService.getById(anyLong())).thenReturn(itemDto);
         Exception exception = assertThrows(ValidationException.class, () -> bookingService.create(inputBookingDto, WRONG_ID));
-        assertEquals(exception.getMessage(), "fail: item cannot be booked!");
+        assertEquals(exception.getMessage(), "Ошибка - item не может быть забронирован!");
     }
 
     @Test
@@ -201,7 +202,7 @@ public class BookingServiceTest {
                 .item(item).build();
         when(bookingRepository.findById(anyLong())).thenReturn(Optional.of(appBooking));
         Exception exception = assertThrows(ValidationException.class, () -> bookingService.approve(1L, 1L, true));
-        assertEquals(exception.getMessage(), "fail: booking is already approved!");
+        assertEquals(exception.getMessage(), "Ошибка - бронирование уже выполенно!");
     }
 
     @ParameterizedTest

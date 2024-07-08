@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.MockedStatic;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
@@ -61,20 +62,25 @@ public class ItemServiceTest {
     private CommentRepository commentRepository;
     @Mock
     private CommentService commentService;
-    @Mock
-    private UserMapper userMapper;
-    @Mock
-    private ItemMapper itemMapper;
-    @Mock
-    private BookingMapper bookingMapper;
-    @Mock
-    private ItemRequestMapper itemRequestMapper;
+    //@Mock
+    //private UserMapper userMapper;
+    private MockedStatic<UserMapper> userMapper;
+    //@Mock
+    //private ItemMapper itemMapper;
+    private MockedStatic<ItemMapper> itemMapper;
+    //@Mock
+    //private BookingMapper bookingMapper;
+    private MockedStatic<BookingMapper> bookingMapper;
+    //@Mock
+    //private ItemRequestMapper itemRequestMapper;
+    private MockedStatic<ItemRequestMapper> itemRequestMapper;
 
     @InjectMocks
     private ItemServiceImpl itemService;
 
-    @Mock
+   // @Mock
     private CommentMapper commentMapper;
+   //private MockedStatic<CommentMapper> commentMapper;
 
     private static final Long USER_ID = 1L;
     private static final Long ITEM_ID = 1L;
@@ -108,8 +114,8 @@ public class ItemServiceTest {
 
     @Test
     void create_successfullyCreated() {
-        when(itemMapper.toItemDto(any(Item.class))).thenReturn(itemDto);
-        when(itemMapper.toItem(any(ItemDto.class))).thenReturn(item);
+        when(ItemMapper.toItemDto(any(Item.class))).thenReturn(itemDto);
+        when(ItemMapper.toItem(any(ItemDto.class))).thenReturn(item);
         when(itemRequestRepository.findById(anyLong())).thenReturn(Optional.of(itemRequest));
         assertEquals(itemDto, itemService.create(itemDto, user.getId()));
         verify(itemRepository).save(item);
@@ -133,7 +139,7 @@ public class ItemServiceTest {
     @Test
     void update_successfullyUpdated() {
         when(itemRepository.findById(item.getId())).thenReturn(Optional.of(updatedItem));
-        when(itemMapper.toItemDto(any(Item.class))).thenReturn(updatedItemDto);
+        when(ItemMapper.toItemDto(any(Item.class))).thenReturn(updatedItemDto);
         assertEquals(updatedItemDto, itemService.update(updatedItemDto, user.getId(), item.getId()));
         verify(itemRepository).save(any(Item.class));
     }
@@ -155,14 +161,14 @@ public class ItemServiceTest {
     @Test
     void getById_successfullyGet() {
         when(itemRepository.findById(anyLong())).thenReturn(Optional.of(item));
-        when(itemMapper.toItemDto(any(Item.class))).thenReturn(itemDto);
+        when(ItemMapper.toItemDto(any(Item.class))).thenReturn(itemDto);
         assertEquals(itemDto, itemService.getById(item.getId()));
     }
 
     @Test
     void getItemById_successfullyGet() {
         when(itemRepository.findById(anyLong())).thenReturn(Optional.of(item));
-        when(itemMapper.toItemDto(any(Item.class))).thenReturn(itemDto);
+        when(ItemMapper.toItemDto(any(Item.class))).thenReturn(itemDto);
         assertEquals(itemDto, itemService.getItemById(item.getId(), user.getId()));
     }
 
@@ -175,7 +181,7 @@ public class ItemServiceTest {
 
     @Test
     void getAll_successfullyGetList() {
-        when(itemMapper.toItemDto(any(Item.class))).thenReturn(itemDto);
+        when(ItemMapper.toItemDto(any(Item.class))).thenReturn(itemDto);
         Page<Item> itemsPage = new PageImpl<>(List.of(item));
         Pageable pageable = PageRequest.of(0, 10);
         when(itemRepository.findAllByOwnerId(eq(user.getId()), eq(pageable))).thenReturn(itemsPage);
@@ -186,7 +192,7 @@ public class ItemServiceTest {
 
     @Test
     void search_successfullyGetItem() {
-        when(itemMapper.toItemDto(any(Item.class))).thenReturn(itemDto);
+        when(ItemMapper.toItemDto(any(Item.class))).thenReturn(itemDto);
         String searchText = "descrip";
         Page<Item> itemsPage = new PageImpl<>(List.of(item));
         Pageable pageable = PageRequest.of(0, 10);
@@ -207,8 +213,8 @@ public class ItemServiceTest {
 
     @Test
     void createComment_successfullyCreated() {
-        when(commentMapper.toCommentDto(any())).thenReturn(commentDto);
-        when(commentMapper.toComment(any())).thenReturn(comment);
+        when(CommentMapper.toCommentDto(any())).thenReturn(commentDto);
+        when(CommentMapper.toComment(any())).thenReturn(comment);
         when(itemRepository.findById(anyLong())).thenReturn(Optional.of(item));
         when(userService.get(anyLong())).thenReturn(userDto);
         when(bookingRepository.findByItemIdAndBookerIdAndStatusAndEndIsBefore(anyLong(), anyLong(), any(), any())).thenReturn(bookingList);

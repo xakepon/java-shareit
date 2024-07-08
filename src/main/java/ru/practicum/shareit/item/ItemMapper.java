@@ -34,4 +34,5 @@ public final class ItemMapper {
         itemToUpdate.setAvailable(Optional.ofNullable(itemDto.getAvailable())
                 .orElse(itemToUpdate.getAvailable()));
     }
+
 }

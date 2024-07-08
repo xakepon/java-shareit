@@ -11,8 +11,8 @@ import ru.practicum.shareit.user.UserDTO;
 import ru.practicum.shareit.user.UserMapper;
 
 //@Component
-//@AllArgsConstructor
-public final class BookingMapper {
+@AllArgsConstructor
+public class BookingMapper {
 
     public static BookingDto toBookingDto(Booking booking) {
         return booking == null ? null : BookingDto.builder()

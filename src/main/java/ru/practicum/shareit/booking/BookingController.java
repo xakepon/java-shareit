@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import ru.practicum.shareit.booking.dto.BookingDto;
 import ru.practicum.shareit.booking.dto.InputBookingDTO;
 
+import javax.validation.Valid;
 import javax.validation.constraints.Positive;
 import javax.validation.constraints.PositiveOrZero;
 import java.util.List;
@@ -50,7 +51,7 @@ public class BookingController {
     }
 
     @PostMapping
-    public BookingDto createBooking(@Validated @RequestBody InputBookingDTO inputBookingDto,
+    public BookingDto createBooking(@Valid @RequestBody InputBookingDTO inputBookingDto,
                                     @RequestHeader(OWNER_ID) Long userId) {
         log.info("Запрос на создание бронирования: userId{}, bookingDto{}", userId, inputBookingDto);
         return service.create(inputBookingDto, userId);

@@ -30,7 +30,6 @@ public class BookingServiceImpl implements BookingService {
     private final BookingRepository repository;
     private final ItemService itemService;
     private final UserService userService;
-    //private final BookingMapper bookingMapper;
 
     @Override
     public BookingDto create(InputBookingDTO inputBookingDto, Long bookerId) {
