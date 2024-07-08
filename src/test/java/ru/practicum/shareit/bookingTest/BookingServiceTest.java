@@ -113,9 +113,9 @@ public class BookingServiceTest {
 
     @Test
     void getById_notFoundBookingId() {
-        when(bookingRepository.findById(WRONG_ID)).thenThrow(new NotFoundException("fail: bookingId Not Found!"));
+        when(bookingRepository.findById(WRONG_ID)).thenThrow(new NotFoundException("Ошибка bookingId не найден!"));
         Exception exception = assertThrows(NotFoundException.class, () -> bookingService.getById(USER_ID, WRONG_ID));
-        assertEquals(exception.getMessage(), "fail: bookingId Not Found!");
+        assertEquals(exception.getMessage(), "Ошибка bookingId не найден!");
     }
 
     @Test
