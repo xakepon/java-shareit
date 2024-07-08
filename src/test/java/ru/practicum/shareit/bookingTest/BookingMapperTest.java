@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.MockedStatic;
 import org.mockito.junit.jupiter.MockitoExtension;
 import ru.practicum.shareit.booking.Booking;
 import ru.practicum.shareit.booking.BookingMapper;
@@ -26,13 +27,16 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 @ExtendWith(MockitoExtension.class)
 public class BookingMapperTest {
 
-    @Mock
-    private UserMapper userMapper;
-    @Mock
-    private ItemMapper itemMapper;
+    //@Mock
+   // private UserMapper userMapper;
+    private MockedStatic<UserMapper> userMapper;
+   //@Mock
+    //private ItemMapper itemMapper;
+    private MockedStatic<ItemMapper> itemMapper;
 
-    @InjectMocks
-    private BookingMapper bookingMapper;
+    //@InjectMocks
+    //private BookingMapper bookingMapper;
+    private MockedStatic<BookingMapper> bookingMapper;
 
     private static final Long ITEM_ID = 1L;
     private static final Long USER_ID = 1L;
@@ -71,14 +75,14 @@ public class BookingMapperTest {
 
     @Test
     void toBookingDto_successfully() {
-        BookingDto actBookingDto = bookingMapper.toBookingDto(booking);
+        BookingDto actBookingDto = BookingMapper.toBookingDto(booking);
         assertEquals(actBookingDto.getId(), bookingDto.getId());
         assertEquals(actBookingDto.getStatus(), bookingDto.getStatus());
     }
 
     @Test
     void toBooking_successfully() {
-        Booking actBooking = bookingMapper.toBooking(inputBookingDto, userDto, itemDto);
+        Booking actBooking = BookingMapper.toBooking(inputBookingDto, userDto, itemDto);
         assertNotNull(actBooking);
         assertEquals(actBooking.getStart(), inputBookingDto.getStart());
         assertEquals(actBooking.getEnd(), inputBookingDto.getEnd());
@@ -86,7 +90,7 @@ public class BookingMapperTest {
 
     @Test
     void toItemBookingDto_successfully() {
-        ShortBookingDTO actShortBooking = bookingMapper.toItemBookingDto(booking);
+        ShortBookingDTO actShortBooking = BookingMapper.toItemBookingDto(booking);
         assertEquals(actShortBooking.getId(), bookingDto.getId());
     }
 

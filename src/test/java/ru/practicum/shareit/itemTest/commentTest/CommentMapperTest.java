@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.MockedStatic;
 import org.mockito.junit.jupiter.MockitoExtension;
 import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.item.dto.ItemDto;
@@ -12,6 +13,7 @@ import ru.practicum.shareit.item.comment.Comment;
 import ru.practicum.shareit.item.comment.CommentDTO;
 import ru.practicum.shareit.item.comment.CommentMapper;
 import ru.practicum.shareit.user.User;
+import ru.practicum.shareit.user.UserMapper;
 
 import java.time.LocalDateTime;
 
@@ -20,8 +22,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @ExtendWith(MockitoExtension.class)
 public class CommentMapperTest {
 
-    @Mock
-    private ItemMapper itemMapper;
+    //@Mock
+    //private ItemMapper itemMapper;
+    private MockedStatic<ItemMapper> itemMapper;
 
     @InjectMocks
     private CommentMapper commentMapper;

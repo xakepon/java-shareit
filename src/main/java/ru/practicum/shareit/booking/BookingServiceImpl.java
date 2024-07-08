@@ -30,7 +30,7 @@ public class BookingServiceImpl implements BookingService {
     private final BookingRepository repository;
     private final ItemService itemService;
     private final UserService userService;
-    private final BookingMapper bookingMapper;
+    //private final BookingMapper bookingMapper;
 
     @Override
     public BookingDto create(InputBookingDTO inputBookingDto, Long bookerId) {
@@ -49,12 +49,12 @@ public class BookingServiceImpl implements BookingService {
         }
 
         UserDTO userDto = userService.get(bookerId);
-        Booking booking = bookingMapper.toBooking(inputBookingDto, userDto, itemDto);
+        Booking booking = BookingMapper.toBooking(inputBookingDto, userDto, itemDto);
         Booking savedBooking = repository.save(booking);
-        BookingDto createdBookingDto = bookingMapper.toBookingDto(savedBooking);
+        BookingDto createdBookingDto = BookingMapper.toBookingDto(savedBooking);
         log.info("Выполнен метод createBooking с данными" + " inputBookingDto:{}, bookerId:{} /" +
                 " createdBookingDto:{}", inputBookingDto, bookerId, createdBookingDto);
-        return bookingMapper.toBookingDto(savedBooking);
+        return BookingMapper.toBookingDto(savedBooking);
     }
 
     @Override
@@ -75,7 +75,7 @@ public class BookingServiceImpl implements BookingService {
         booking.setStatus(newStatus);
         repository.save(booking);
 
-        BookingDto approvedBookingDto = bookingMapper.toBookingDto(booking);
+        BookingDto approvedBookingDto = BookingMapper.toBookingDto(booking);
         log.info("выполнен метод approve с парамтерами" + " userId:{}, bookingId:{}, isApproved:{} / " +
                         " bookingStatus:{}, approvedBookingDto:{}",
                 userId, bookingId, isApproved, newStatus, approvedBookingDto);
@@ -92,7 +92,7 @@ public class BookingServiceImpl implements BookingService {
             throw new NotFoundException("Ошибка userId не равен bookingId или не равен OwnerId!");
         }
 
-        BookingDto bookingDto = bookingMapper.toBookingDto(booking);
+        BookingDto bookingDto = BookingMapper.toBookingDto(booking);
         log.info("выполнен метод getById с параметрами" + " userId:{}, bookingId:{} / bookingDto:{}",
                 userId, bookingId, bookingDto);
         return bookingDto;
@@ -198,7 +198,7 @@ public class BookingServiceImpl implements BookingService {
 
     private List<BookingDto> getBookingDtoList(Page<Booking> bookings) {
         return bookings.stream()
-                .map(bookingMapper::toBookingDto)
+                .map(BookingMapper::toBookingDto)
                 .collect(Collectors.toList());
     }
 

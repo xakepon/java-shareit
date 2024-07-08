@@ -41,7 +41,7 @@ public class ItemServiceImpl implements ItemService {
     //private UserMapper userMapper;
     //private ItemMapper itemMapper;
     //private CommentMapper commentMapper;
-    private BookingMapper bookingMapper;
+    //private BookingMapper bookingMapper;
 
     @Override
     public ItemDto create(ItemDto itemDto, Long userId) {
@@ -190,10 +190,10 @@ public class ItemServiceImpl implements ItemService {
         Booking nextBooking = getNextBooking(now, bookings);
 
         if (lastBooking != null) {
-            itemDto.setLastBooking(bookingMapper.toItemBookingDto(lastBooking));
+            itemDto.setLastBooking(BookingMapper.toItemBookingDto(lastBooking));
         }
         if (nextBooking != null) {
-            itemDto.setNextBooking(bookingMapper.toItemBookingDto(nextBooking));
+            itemDto.setNextBooking(BookingMapper.toItemBookingDto(nextBooking));
         }
         return itemDto;
     }

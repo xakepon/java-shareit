@@ -7,6 +7,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.MockedStatic;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
@@ -51,16 +52,20 @@ public class BookingServiceTest {
     private ItemService itemService;
     @Mock
     private UserService userService;
-    @Mock
-    private BookingMapper bookingMapper;
+    //@Mock
+    //private BookingMapper bookingMapper;
+    //private MockedStatic<BookingMapper> bookingMapper;
 
     @InjectMocks
     private BookingServiceImpl bookingService;
 
-    @Mock
-    private ItemMapper itemMapper;
-    @Mock
-    private UserMapper userMapper;
+   // @Mock
+   // private ItemMapper itemMapper;
+    //@Mock
+    //private UserMapper userMapper;
+   // private MockedStatic<ItemMapper> itemMapper;
+    //private MockedStatic<UserMapper> userMapper;
+
     @Mock
     private ItemRepository itemRepository;
     @Mock
@@ -99,7 +104,7 @@ public class BookingServiceTest {
 
     @Test
     void getById_successfullyGet() {
-        when(bookingMapper.toBookingDto(any())).thenReturn(bookingDto);
+        when(BookingMapper.toBookingDto(any())).thenReturn(bookingDto);
         when(bookingRepository.findById(anyLong())).thenReturn(Optional.of(booking));
         assertEquals(bookingDto, bookingService.getById(user.getId(), booking.getId()));
         verify(bookingRepository).findById(anyLong());
@@ -122,7 +127,7 @@ public class BookingServiceTest {
 
     @Test
     void getUserBookings_successfullyGetList() {
-        when(bookingMapper.toBookingDto(any())).thenReturn(bookingDto);
+        when(BookingMapper.toBookingDto(any())).thenReturn(bookingDto);
         Page<Booking> bookingPage = new PageImpl<>(bookings, PageRequest.of(0, 10), bookings.size());
         when(bookingRepository.findByBookerIdOrderByStartDesc(eq(USER_ID), eq(PageRequest.of(0, 10)))).thenReturn(bookingPage);
         List<BookingDto> allUserBookings = bookingService.getAllUserBookings(USER_ID, "ALL", 0, 10);
@@ -131,7 +136,7 @@ public class BookingServiceTest {
 
     @Test
     void getAllOwnerBookings_successfullyGetList() {
-        when(bookingMapper.toBookingDto(any())).thenReturn(bookingDto);
+        when(BookingMapper.toBookingDto(any())).thenReturn(bookingDto);
         Page<Booking> bookingPage = new PageImpl<>(bookings, PageRequest.of(0, 10), bookings.size());
         when(bookingRepository.findByItemOwnerIdOrderByStartDesc(OWNER_ID, PageRequest.of(0, 10))).thenReturn(bookingPage);
         List<BookingDto> allOwnerBookings = bookingService.getAllOwnerBookings(OWNER_ID, "ALL", 0, 10);
@@ -140,8 +145,8 @@ public class BookingServiceTest {
 
     @Test
     void create_successfully() {
-        when(bookingMapper.toBookingDto(any())).thenReturn(bookingDto);
-        when(bookingMapper.toBooking(any(), any(), any())).thenReturn(booking);
+        when(BookingMapper.toBookingDto(any())).thenReturn(bookingDto);
+        when(BookingMapper.toBooking(any(), any(), any())).thenReturn(booking);
         when(itemService.getById(ITEM_ID)).thenReturn(itemDto);
         when(userService.get(BOOKER_ID)).thenReturn(userDto);
         BookingDto createdBookingDto = bookingService.create(inputBookingDto, BOOKER_ID);
@@ -179,7 +184,7 @@ public class BookingServiceTest {
 
     @Test
     void approve_successfullyApprovedBooking() {
-        when(bookingMapper.toBookingDto(any())).thenReturn(bookingDto);
+        when(BookingMapper.toBookingDto(any())).thenReturn(bookingDto);
         booking.setStatus(BookingStatus.WAITING);
         when(bookingRepository.findById(BOOKING_ID)).thenReturn(Optional.of(booking));
         BookingDto approvedBooking = bookingService.approve(user.getId(), BOOKING_ID, true);
@@ -202,7 +207,7 @@ public class BookingServiceTest {
     @ParameterizedTest
     @CsvSource(value = {"ALL, 0, 2", "CURRENT, -2, 2", "PAST, -3, -1", "FUTURE, 2, 4", "WAITING, 0, 1", "REJECTED, 1, 3"})
     void getAllOwnerBookings_successfullyGetList(String state, int startTime, int endTime) {
-        when(bookingMapper.toBookingDto(any())).thenReturn(bookingDto);
+        when(BookingMapper.toBookingDto(any())).thenReturn(bookingDto);
         LocalDateTime start = LocalDateTime.now().plusDays(startTime);
         LocalDateTime end = LocalDateTime.now().plusDays(endTime);
         Page<Booking> bookingPage = new PageImpl<>(bookings, PageRequest.of(0, 10), bookings.size());
@@ -228,7 +233,7 @@ public class BookingServiceTest {
     @ParameterizedTest
     @CsvSource(value = {"ALL, 0, 2", "CURRENT, -2, 2", "PAST, -3, -1", "FUTURE, 2, 4", "WAITING, 0, 1", "REJECTED, 1, 3"})
     void getAllUserBookings_successfullyGetList(String state, int startTime, int endTime) {
-        when(bookingMapper.toBookingDto(any())).thenReturn(bookingDto);
+        when(BookingMapper.toBookingDto(any())).thenReturn(bookingDto);
         LocalDateTime start = LocalDateTime.now().plusDays(startTime);
         LocalDateTime end = LocalDateTime.now().plusDays(endTime);
         Page<Booking> bookingPage = new PageImpl<>(bookings, PageRequest.of(0, 10), bookings.size());

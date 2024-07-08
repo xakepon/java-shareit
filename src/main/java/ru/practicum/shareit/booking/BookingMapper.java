@@ -10,11 +10,11 @@ import ru.practicum.shareit.item.dto.ItemDto;
 import ru.practicum.shareit.user.UserDTO;
 import ru.practicum.shareit.user.UserMapper;
 
-@Component
-@AllArgsConstructor
+//@Component
+//@AllArgsConstructor
 public final class BookingMapper {
 
-    public BookingDto toBookingDto(Booking booking) {
+    public static BookingDto toBookingDto(Booking booking) {
         return booking == null ? null : BookingDto.builder()
                 .id(booking.getId())
                 .start(booking.getStart())
@@ -26,7 +26,7 @@ public final class BookingMapper {
                 .build();
     }
 
-    public Booking toBooking(InputBookingDTO inputBookingDto, UserDTO userDto, ItemDto itemDto) {
+    public static Booking toBooking(InputBookingDTO inputBookingDto, UserDTO userDto, ItemDto itemDto) {
         return inputBookingDto == null ? null : Booking.builder()
                 .start(inputBookingDto.getStart())
                 .end(inputBookingDto.getEnd())
@@ -36,7 +36,7 @@ public final class BookingMapper {
                 .build();
     }
 
-    public ShortBookingDTO toItemBookingDto(Booking booking) {
+    public static ShortBookingDTO toItemBookingDto(Booking booking) {
         return booking == null ? null : ShortBookingDTO.builder()
                 .id(booking.getId())
                 .bookerId(booking.getBooker().getId())
