@@ -20,10 +20,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @ExtendWith(MockitoExtension.class)
 public class RequestMapperTest {
 
-    @Mock
+   /* @Mock
     private UserMapper userMapper;
     @Mock
-    private ItemMapper itemMapper;
+    private ItemMapper itemMapper;*/
 
     @InjectMocks
     private ItemRequestMapper itemRequestMapper;

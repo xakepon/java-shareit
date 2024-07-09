@@ -45,10 +45,10 @@ public class RequestServiceTest {
     private UserService userService;
     @Mock
     private ItemRequestMapper itemRequestMapper;
-    @Mock
+    /*@Mock
     private ItemMapper itemMapper;
     @Mock
-    private UserMapper userMapper;
+    private UserMapper userMapper;*/
 
     @InjectMocks
     private ItemRequestServiceImpl itemRequestService;
