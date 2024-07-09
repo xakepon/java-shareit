@@ -1,4 +1,0 @@
--------------------------------------------------------------------------------
-Test set: ru.practicum.shareit.bookingTest.BookingControllerTest
--------------------------------------------------------------------------------
-Tests run: 8, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 17.038 s - in ru.practicum.shareit.bookingTest.BookingControllerTest
