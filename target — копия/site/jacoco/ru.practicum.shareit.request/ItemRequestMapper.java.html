@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ru"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ItemRequestMapper.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">ShareIt</a> &gt; <a href="index.source.html" class="el_package">ru.practicum.shareit.request</a> &gt; <span class="el_source">ItemRequestMapper.java</span></div><h1>ItemRequestMapper.java</h1><pre class="source lang-java linenums">package ru.practicum.shareit.request;
+
+import lombok.AllArgsConstructor;
+import org.springframework.stereotype.Component;
+import ru.practicum.shareit.item.ItemMapper;
+import ru.practicum.shareit.item.dto.ItemDto;
+import ru.practicum.shareit.request.dto.ItemRequestDto;
+import ru.practicum.shareit.user.UserMapper;
+
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
+
+@Component
+@AllArgsConstructor
+public final class ItemRequestMapper {
+    public ItemRequestDto toItemRequestDto(ItemRequest itemRequest) {
+<span class="fc" id="L18">        return ItemRequestDto.builder()</span>
+<span class="fc" id="L19">                .id(itemRequest.getId())</span>
+<span class="fc" id="L20">                .description(itemRequest.getDescription())</span>
+<span class="fc" id="L21">                .created(itemRequest.getCreated())</span>
+<span class="fc" id="L22">                .requestor(UserMapper.toUserDto(itemRequest.getRequestor()))</span>
+<span class="fc" id="L23">                .items(mapItems(itemRequest))</span>
+<span class="fc" id="L24">                .build();</span>
+    }
+
+    public ItemRequest toItemRequest(ItemRequestDto itemRequestDto) {
+<span class="pc bpc" id="L28" title="1 of 2 branches missed.">        return itemRequestDto == null ? null : ItemRequest.builder()</span>
+<span class="fc" id="L29">                .id(itemRequestDto.getId())</span>
+<span class="fc" id="L30">                .description(itemRequestDto.getDescription())</span>
+<span class="fc" id="L31">                .requestor(UserMapper.toUser(itemRequestDto.getRequestor()))</span>
+<span class="fc" id="L32">                .created(itemRequestDto.getCreated())</span>
+<span class="fc" id="L33">                .build();</span>
+    }
+
+    private List&lt;ItemDto&gt; mapItems(ItemRequest itemRequest) {
+<span class="pc bpc" id="L37" title="1 of 2 branches missed.">        return itemRequest.getItems() != null ? itemRequest.getItems()</span>
+<span class="nc" id="L38">                .stream()</span>
+<span class="nc" id="L39">                .map(ItemMapper::toItemDto)</span>
+<span class="pc" id="L40">                .collect(Collectors.toList()) : Collections.emptyList();</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

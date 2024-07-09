@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ru"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>UserMapper.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">ShareIt</a> &gt; <a href="index.source.html" class="el_package">ru.practicum.shareit.user</a> &gt; <span class="el_source">UserMapper.java</span></div><h1>UserMapper.java</h1><pre class="source lang-java linenums">package ru.practicum.shareit.user;
+
+import java.util.Optional;
+
+<span class="fc" id="L5">public final class UserMapper {</span>
+    public static User toUser(UserDTO userDto) {
+<span class="fc bfc" id="L7" title="All 2 branches covered.">        return userDto == null ? null : User.builder()</span>
+<span class="fc" id="L8">                .id(userDto.getId())</span>
+<span class="fc" id="L9">                .name(userDto.getName())</span>
+<span class="fc" id="L10">                .email(userDto.getEmail())</span>
+<span class="fc" id="L11">                .build();</span>
+    }
+
+    public static UserDTO toUserDto(User user) {
+<span class="pc bpc" id="L15" title="1 of 2 branches missed.">        return user == null ? null : UserDTO.builder()</span>
+<span class="fc" id="L16">                .id(user.getId())</span>
+<span class="fc" id="L17">                .name(user.getName())</span>
+<span class="fc" id="L18">                .email(user.getEmail())</span>
+<span class="fc" id="L19">                .build();</span>
+    }
+
+    public static void updateUserDto(UserDTO userDto, User userToUpdate) {
+<span class="nc" id="L23">        String updatedEmail = Optional.ofNullable(userDto.getEmail())</span>
+<span class="nc" id="L24">                .filter(email -&gt; email.contains(&quot;@&quot;))</span>
+<span class="nc" id="L25">                .orElse(userToUpdate.getEmail());</span>
+<span class="nc" id="L26">        userToUpdate.setEmail(updatedEmail);</span>
+
+<span class="nc" id="L28">        String updatedName = Optional.ofNullable(userDto.getName())</span>
+<span class="nc bnc" id="L29" title="All 2 branches missed.">                .filter(name -&gt; !name.isEmpty())</span>
+<span class="nc" id="L30">                .orElse(userToUpdate.getName());</span>
+<span class="nc" id="L31">        userToUpdate.setName(updatedName);</span>
+<span class="nc" id="L32">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

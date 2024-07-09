@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ru"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>UserController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">ShareIt</a> &gt; <a href="index.source.html" class="el_package">ru.practicum.shareit.user</a> &gt; <span class="el_source">UserController.java</span></div><h1>UserController.java</h1><pre class="source lang-java linenums">package ru.practicum.shareit.user;
+
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+/**
+ * TODO Sprint add-controllers.
+ */
+<span class="fc" id="L13">@Slf4j</span>
+@RestController
+@RequestMapping(path = &quot;/users&quot;)
+@RequiredArgsConstructor
+public class UserController {
+
+    private final UserService userService;
+
+    @GetMapping(&quot;/{userId}&quot;)
+    public UserDTO getUser(@PathVariable Long userId) {
+<span class="fc" id="L23">        log.info(&quot;Выполнен запрос на получение userId {}&quot;, userId);</span>
+<span class="fc" id="L24">        return userService.get(userId);</span>
+    }
+
+    @GetMapping
+    public List&lt;UserDTO&gt; getUsers() {
+<span class="fc" id="L29">        log.info(&quot;Выполнен запрос на получение пользовтелей&quot;);</span>
+<span class="fc" id="L30">        return userService.getUsers();</span>
+    }
+
+    /*@PostMapping
+    public UserDTO addItem(@Validated @RequestBody UserDTO userDTO) {
+        log.info(&quot;Выполнен запрос на создание Item userDto {}&quot;, userDTO);
+        return userService.add(userDTO);
+    }*/
+
+    @PostMapping
+    public UserDTO createUser(@Validated @RequestBody UserDTO userDto) {
+<span class="fc" id="L41">        log.info(&quot;Post-request createItem: userDto {}&quot;, userDto);</span>
+<span class="fc" id="L42">        return userService.add(userDto);</span>
+    }
+
+    @PatchMapping(&quot;/{userId}&quot;)
+    public UserDTO update(@RequestBody UserDTO userDTO, @PathVariable Long userId) {
+<span class="fc" id="L47">        log.info(&quot;Выполнен запрос на обновление UserDTO по userID {}, userDto {}&quot;, userId, userDTO);</span>
+<span class="fc" id="L48">        return userService.update(userDTO, userId);</span>
+    }
+
+    @DeleteMapping(&quot;/{userId}&quot;)
+    public void remove(@PathVariable Long userId) {
+<span class="fc" id="L53">        log.info(&quot;Выполнен запрос на создание пользователя userId {}&quot;, userId);</span>
+<span class="fc" id="L54">        userService.remove(userId);</span>
+<span class="fc" id="L55">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

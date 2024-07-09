@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ru"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ItemRequestController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">ShareIt</a> &gt; <a href="index.source.html" class="el_package">ru.practicum.shareit.request</a> &gt; <span class="el_source">ItemRequestController.java</span></div><h1>ItemRequestController.java</h1><pre class="source lang-java linenums">package ru.practicum.shareit.request;
+
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
+import ru.practicum.shareit.request.dto.ItemRequestDto;
+
+import javax.validation.constraints.Positive;
+import javax.validation.constraints.PositiveOrZero;
+import java.util.List;
+
+/**
+ * TODO Sprint add-item-requests.
+ */
+<span class="fc" id="L16">@Slf4j</span>
+@RequiredArgsConstructor
+@RestController
+@RequestMapping(path = &quot;/requests&quot;)
+@Validated
+public class ItemRequestController {
+
+    private static final String OWNER_ID = &quot;X-Sharer-User-Id&quot;;
+    private final ItemRequestService service;
+
+    @GetMapping
+    public List&lt;ItemRequestDto&gt; getOwnItemRequests(@PositiveOrZero @RequestParam(defaultValue = &quot;0&quot;) Integer from,
+                                                   @Positive @RequestParam(defaultValue = &quot;10&quot;) Integer size,
+                                                   @RequestHeader(OWNER_ID) Long userId) {
+<span class="fc" id="L30">        log.info(&quot;Получен запрос getOwnItemRequests: userId={}, from={}, size={}&quot;, userId, from, size);</span>
+<span class="fc" id="L31">        return service.getOwnItemRequests(userId, from, size);</span>
+    }
+
+    @GetMapping(&quot;/all&quot;)
+    public List&lt;ItemRequestDto&gt; getAllItemRequests(@PositiveOrZero @RequestParam(defaultValue = &quot;0&quot;) Integer from,
+                                                   @Positive @RequestParam(defaultValue = &quot;10&quot;) Integer size,
+                                                   @RequestHeader(OWNER_ID) Long userId) {
+<span class="fc" id="L38">        log.info(&quot;Получен запрос getAllItemRequests: userId={}, from={}, size={}&quot;, userId, from, size);</span>
+<span class="fc" id="L39">        return service.getAllItemRequests(userId, from, size);</span>
+    }
+
+    @GetMapping(&quot;/{requestId}&quot;)
+    public ItemRequestDto getItemRequestById(@PathVariable Long requestId,
+                                             @RequestHeader(OWNER_ID) Long userId) {
+<span class="fc" id="L45">        log.info(&quot;Получен запрос getItemRequest: requestId={}, userId={}&quot;, requestId, userId);</span>
+<span class="fc" id="L46">        return service.getById(requestId, userId);</span>
+    }
+
+    @PostMapping
+    public ItemRequestDto createItemRequest(@Validated @RequestBody ItemRequestDto itemRequestDto,
+                                            @RequestHeader(OWNER_ID) Long userId) {
+<span class="fc" id="L52">        log.info(&quot;Получен запрос createItemRequest: userId={}, description={}&quot;, userId, itemRequestDto);</span>
+<span class="fc" id="L53">        return service.create(userId, itemRequestDto);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>
