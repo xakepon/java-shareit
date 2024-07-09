@@ -3,7 +3,6 @@ package ru.practicum.shareit.exceptionTest;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import ru.practicum.shareit.ErrorResponse;
 import ru.practicum.shareit.exception.ErrorHandler;
