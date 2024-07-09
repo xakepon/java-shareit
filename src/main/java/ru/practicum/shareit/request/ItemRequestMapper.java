@@ -11,10 +11,10 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Component
+//@Component
 @AllArgsConstructor
 public class ItemRequestMapper {
-    public ItemRequestDto toItemRequestDto(ItemRequest itemRequest) {
+    public static ItemRequestDto toItemRequestDto(ItemRequest itemRequest) {
         return ItemRequestDto.builder()
                 .id(itemRequest.getId())
                 .description(itemRequest.getDescription())
@@ -24,7 +24,7 @@ public class ItemRequestMapper {
                 .build();
     }
 
-    public ItemRequest toItemRequest(ItemRequestDto itemRequestDto) {
+    public static ItemRequest toItemRequest(ItemRequestDto itemRequestDto) {
         return itemRequestDto == null ? null : ItemRequest.builder()
                 .id(itemRequestDto.getId())
                 .description(itemRequestDto.getDescription())
@@ -33,7 +33,7 @@ public class ItemRequestMapper {
                 .build();
     }
 
-    private List<ItemDto> mapItems(ItemRequest itemRequest) {
+    private static List<ItemDto> mapItems(ItemRequest itemRequest) {
         return itemRequest.getItems() != null ? itemRequest.getItems()
                 .stream()
                 .map(ItemMapper::toItemDto)

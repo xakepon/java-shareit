@@ -1,10 +1,13 @@
 package ru.practicum.shareit.requestTest;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.MockedStatic;
+import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
@@ -41,8 +44,8 @@ public class RequestServiceTest {
     private ItemRepository itemRepository;
     @Mock
     private UserService userService;
-    @Mock
-    private ItemRequestMapper itemRequestMapper;
+   //@Mock
+   //private ItemRequestMapper itemRequestMapper;
     /*@Mock
     private ItemMapper itemMapper;
     @Mock
@@ -67,17 +70,27 @@ public class RequestServiceTest {
     private final List<ItemRequest> itemRequestList = List.of(itemRequest);
     private final List<ItemRequestDto> itemRequestDtoList = List.of(itemRequestDto);
 
+    private MockedStatic<ItemRequestMapper> mockedStatic;
+
+
     @BeforeEach
     void setUp() {
         when(itemRequestRepository.save(any(ItemRequest.class))).thenReturn(itemRequest);
-        when(itemRequestMapper.toItemRequestDto(any(ItemRequest.class))).thenReturn(itemRequestDto);
-        when(itemRequestMapper.toItemRequest(any(ItemRequestDto.class))).thenReturn(itemRequest);
+        //when(ItemRequestMapper.toItemRequestDto(any(ItemRequest.class))).thenReturn(itemRequestDto);
+        //when(ItemRequestMapper.toItemRequest(any(ItemRequestDto.class))).thenReturn(itemRequest);
 
+        mockedStatic = Mockito.mockStatic(ItemRequestMapper.class);
+        mockedStatic.when(() -> ItemRequestMapper.toItemRequestDto(any(ItemRequest.class))).thenReturn(itemRequestDto);
+        mockedStatic.when(() -> ItemRequestMapper.toItemRequest(any(ItemRequestDto.class))).thenReturn(itemRequest);
+    }
+
+    @AfterEach
+    void tearDown() {
+        mockedStatic.close();
     }
 
     @Test
     void create_successfullyCreated() {
-        when(itemRequestMapper.toItemRequest(any(ItemRequestDto.class))).thenReturn(itemRequest);
         ItemRequestDto createdItemRequestDto = itemRequestService.create(USER_ID, itemRequestDto);
         verify(itemRequestRepository).save(any(ItemRequest.class));
         assertEquals(itemRequestDto, createdItemRequestDto);

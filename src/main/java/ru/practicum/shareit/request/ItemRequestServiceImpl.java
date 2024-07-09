@@ -30,17 +30,17 @@ public class ItemRequestServiceImpl implements ItemRequestService {
     private final ItemRequestRepository itemRequestRepository;
     private final ItemRepository itemRepository;
     private final UserService userService;
-    private final ItemRequestMapper itemRequestMapper;
+    //private final ItemRequestMapper itemRequestMapper;
 
     @Override
     public ItemRequestDto create(Long userId, ItemRequestDto itemRequestDto) {
         User user = UserMapper.toUser(userService.get(userId));
-        ItemRequest itemRequest = itemRequestMapper.toItemRequest(itemRequestDto);
+        ItemRequest itemRequest = ItemRequestMapper.toItemRequest(itemRequestDto);
         itemRequest.setRequestor(user);
         itemRequest.setItems(createItemList(itemRequestDto.getItems()));
         itemRequestRepository.save(itemRequest);
 
-        ItemRequestDto createdItemRequestDto = itemRequestMapper.toItemRequestDto(itemRequest);
+        ItemRequestDto createdItemRequestDto = ItemRequestMapper.toItemRequestDto(itemRequest);
         log.info("Выполнен метод создания ItemRequestDto " + " userId={}, itemRequestDto={} / createdItemRequestDto={}",
                 userId, itemRequestDto, createdItemRequestDto);
         return createdItemRequestDto;
@@ -53,7 +53,7 @@ public class ItemRequestServiceImpl implements ItemRequestService {
                 .orElseThrow(() -> new NotFoundException("fail: requestId Not Found!"));
 
         List<Item> items = itemRepository.findAllByItemRequest(itemRequest);
-        ItemRequestDto itemRequestDto = itemRequestMapper.toItemRequestDto(itemRequest);
+        ItemRequestDto itemRequestDto = ItemRequestMapper.toItemRequestDto(itemRequest);
         itemRequestDto.setItems(createItemDtoList(items));
         log.info("Выполнен метод получения getById" + " userId={}, requestId={} / itemRequestDto={}",
                 userId, itemRequestDto, itemRequestDto);
@@ -101,7 +101,7 @@ public class ItemRequestServiceImpl implements ItemRequestService {
     private List<ItemRequestDto> createItemRequestList(List<ItemRequest> requestList) {
         return requestList.stream()
                 .peek(itemRequest -> itemRequest.setItems(itemRepository.findAllByItemRequest(itemRequest)))
-                .map(itemRequestMapper::toItemRequestDto)
+                .map(ItemRequestMapper::toItemRequestDto)
                 .collect(Collectors.toList());
     }
 
