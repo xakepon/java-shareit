@@ -1,10 +1,13 @@
 package ru.practicum.shareit.userTest;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.MockedStatic;
+import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
@@ -26,8 +29,6 @@ import static org.mockito.Mockito.*;
 public class UserServiceTest {
 
     @Mock
-    private UserMapper mapper;
-    @Mock
     private UserRepository userRepository;
 
     @InjectMocks
@@ -42,10 +43,19 @@ public class UserServiceTest {
     private final UserDTO userDto = new UserDTO(USER_ID, "user", "user@user.user");
     private final UserDTO updatedUserDto = new UserDTO(USER_ID, "updatedUser", "user@user.user");
 
+    private MockedStatic<UserMapper> mockedStatic;
+
     @BeforeEach
     void setUp() {
-        lenient().when(mapper.toUserDto(any(User.class))).thenReturn(userDto);
-        lenient().when(mapper.toUser(any(UserDTO.class))).thenReturn(user);
+        mockedStatic = Mockito.mockStatic(UserMapper.class);
+        lenient().when(UserMapper.toUserDto(any(User.class))).thenReturn(userDto);
+        lenient().when(UserMapper.toUser(any(UserDTO.class))).thenReturn(user);
+        lenient().when(UserMapper.toUser(any(UserDTO.class))).thenReturn(user);
+    }
+
+    @AfterEach
+    void tearDown() {
+        mockedStatic.close();
     }
 
     @Test
@@ -84,14 +94,14 @@ public class UserServiceTest {
 
     @Test
     void update_successfullyUpdated() {
-        when(userRepository.findById(1L)).thenReturn(Optional.of(user));
-        when(mapper.toUser(updatedUserDto)).thenReturn(user);
+        when(userRepository.findById(USER_ID)).thenReturn(Optional.of(user));
         when(userRepository.save(any(User.class))).thenReturn(user);
         UserDTO updatedUser = userService.update(updatedUserDto, USER_ID);
         assertNotNull(updatedUser);
         assertEquals(userDto.getName(), updatedUser.getName());
         assertEquals(userDto.getEmail(), updatedUser.getEmail());
         assertEquals(userDto.getId(), updatedUser.getId());
+
     }
 
     @Test

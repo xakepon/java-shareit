@@ -2,8 +2,6 @@ package ru.practicum.shareit.bookingTest;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.mockito.MockedStatic;
 import org.mockito.junit.jupiter.MockitoExtension;
 import ru.practicum.shareit.booking.Booking;
@@ -27,15 +25,10 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 @ExtendWith(MockitoExtension.class)
 public class BookingMapperTest {
 
-    //@Mock
-   // private UserMapper userMapper;
     private MockedStatic<UserMapper> userMapper;
-   //@Mock
-    //private ItemMapper itemMapper;
+
     private MockedStatic<ItemMapper> itemMapper;
 
-    //@InjectMocks
-    //private BookingMapper bookingMapper;
     private MockedStatic<BookingMapper> bookingMapper;
 
     private static final Long ITEM_ID = 1L;

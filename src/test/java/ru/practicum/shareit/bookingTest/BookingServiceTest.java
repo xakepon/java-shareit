@@ -8,6 +8,7 @@ import org.junit.jupiter.params.provider.CsvSource;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockedStatic;
+import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
@@ -52,18 +53,12 @@ public class BookingServiceTest {
     private ItemService itemService;
     @Mock
     private UserService userService;
-    //@Mock
-    //private BookingMapper bookingMapper;
-   //@Mock
+
     private MockedStatic<BookingMapper> bookingMapper;
 
     @InjectMocks
     private BookingServiceImpl bookingService;
 
-   // @Mock
-   // private ItemMapper itemMapper;
-    //@Mock
-    //private UserMapper userMapper;
     private MockedStatic<ItemMapper> itemMapper;
     private MockedStatic<UserMapper> userMapper;
 
@@ -105,10 +100,14 @@ public class BookingServiceTest {
 
     @Test
     void getById_successfullyGet() {
-       //when(BookingMapper.toBookingDto(any())).thenReturn(bookingDto);
-        when(bookingRepository.findById(anyLong())).thenReturn(Optional.of(booking));
-        assertEquals(bookingDto, bookingService.getById(user.getId(), booking.getId()));
-        verify(bookingRepository).findById(anyLong());
+
+        try (MockedStatic<BookingMapper> mockedStatic = Mockito.mockStatic(BookingMapper.class)) {
+            mockedStatic.when(() -> BookingMapper.toBookingDto(any())).thenReturn(bookingDto);
+            when(bookingRepository.findById(anyLong())).thenReturn(Optional.of(booking));
+            BookingDto actualDto = bookingService.getById(user.getId(), booking.getId());
+            assertEquals(bookingDto, actualDto);
+            verify(bookingRepository).findById(anyLong());
+        }
     }
 
     @Test
@@ -128,31 +127,43 @@ public class BookingServiceTest {
 
     @Test
     void getUserBookings_successfullyGetList() {
-        when(BookingMapper.toBookingDto(any())).thenReturn(bookingDto);
-        Page<Booking> bookingPage = new PageImpl<>(bookings, PageRequest.of(0, 10), bookings.size());
-        when(bookingRepository.findByBookerIdOrderByStartDesc(eq(USER_ID), eq(PageRequest.of(0, 10)))).thenReturn(bookingPage);
-        List<BookingDto> allUserBookings = bookingService.getAllUserBookings(USER_ID, "ALL", 0, 10);
-        assertEquals(bookingDtoList, allUserBookings);
+
+        try (MockedStatic<BookingMapper> mockedStatic = Mockito.mockStatic(BookingMapper.class)) {
+            mockedStatic.when(() -> BookingMapper.toBookingDto(any())).thenReturn(bookingDto);
+            Page<Booking> bookingPage = new PageImpl<>(bookings, PageRequest.of(0, 10), bookings.size());
+            when(bookingRepository.findByBookerIdOrderByStartDesc(eq(USER_ID), eq(PageRequest.of(0, 10)))).thenReturn(bookingPage);
+            List<BookingDto> allUserBookings = bookingService.getAllUserBookings(USER_ID, "ALL", 0, 10);
+            assertEquals(bookingDtoList, allUserBookings);
+        }
     }
 
     @Test
     void getAllOwnerBookings_successfullyGetList() {
-        when(BookingMapper.toBookingDto(any())).thenReturn(bookingDto);
-        Page<Booking> bookingPage = new PageImpl<>(bookings, PageRequest.of(0, 10), bookings.size());
-        when(bookingRepository.findByItemOwnerIdOrderByStartDesc(OWNER_ID, PageRequest.of(0, 10))).thenReturn(bookingPage);
-        List<BookingDto> allOwnerBookings = bookingService.getAllOwnerBookings(OWNER_ID, "ALL", 0, 10);
-        assertEquals(bookingDtoList, allOwnerBookings);
+
+        try (MockedStatic<BookingMapper> mockedStatic = Mockito.mockStatic(BookingMapper.class)) {
+            mockedStatic.when(() -> BookingMapper.toBookingDto(any())).thenReturn(bookingDto);
+            Page<Booking> bookingPage = new PageImpl<>(bookings, PageRequest.of(0, 10), bookings.size());
+            when(bookingRepository.findByItemOwnerIdOrderByStartDesc(OWNER_ID, PageRequest.of(0, 10))).thenReturn(bookingPage);
+            List<BookingDto> allOwnerBookings = bookingService.getAllOwnerBookings(OWNER_ID, "ALL", 0, 10);
+            assertEquals(bookingDtoList, allOwnerBookings);
+        }
+
     }
 
     @Test
     void create_successfully() {
-        when(BookingMapper.toBookingDto(any())).thenReturn(bookingDto);
-        when(BookingMapper.toBooking(any(), any(), any())).thenReturn(booking);
-        when(itemService.getById(ITEM_ID)).thenReturn(itemDto);
-        when(userService.get(BOOKER_ID)).thenReturn(userDto);
-        BookingDto createdBookingDto = bookingService.create(inputBookingDto, BOOKER_ID);
-        assertEquals(bookingDto, createdBookingDto);
-        verify(bookingRepository).save(any(Booking.class));
+
+        try (MockedStatic<BookingMapper> mockedStatic = Mockito.mockStatic(BookingMapper.class)) {
+            mockedStatic.when(() -> BookingMapper.toBookingDto(any())).thenReturn(bookingDto);
+            mockedStatic.when(() -> BookingMapper.toBooking(any(), any(), any())).thenReturn(booking);
+            when(itemService.getById(ITEM_ID)).thenReturn(itemDto);
+            when(userService.get(BOOKER_ID)).thenReturn(userDto);
+            BookingDto createdBookingDto = bookingService.create(inputBookingDto, BOOKER_ID);
+            assertEquals(bookingDto, createdBookingDto);
+            verify(bookingRepository).save(any(Booking.class));
+        }
+
+
     }
 
     @Test
@@ -185,12 +196,15 @@ public class BookingServiceTest {
 
     @Test
     void approve_successfullyApprovedBooking() {
-        when(BookingMapper.toBookingDto(any())).thenReturn(bookingDto);
-        booking.setStatus(BookingStatus.WAITING);
-        when(bookingRepository.findById(BOOKING_ID)).thenReturn(Optional.of(booking));
-        BookingDto approvedBooking = bookingService.approve(user.getId(), BOOKING_ID, true);
-        assertEquals(BookingStatus.APPROVED, approvedBooking.getStatus());
-        verify(bookingRepository).save(any(Booking.class));
+
+        try (MockedStatic<BookingMapper> mockedStatic = Mockito.mockStatic(BookingMapper.class)) {
+            mockedStatic.when(() -> BookingMapper.toBookingDto(any())).thenReturn(bookingDto);
+            booking.setStatus(BookingStatus.WAITING);
+            when(bookingRepository.findById(BOOKING_ID)).thenReturn(Optional.of(booking));
+            BookingDto approvedBooking = bookingService.approve(user.getId(), BOOKING_ID, true);
+            assertEquals(BookingStatus.APPROVED, approvedBooking.getStatus());
+            verify(bookingRepository).save(any(Booking.class));
+        }
     }
 
     @Test
@@ -208,54 +222,60 @@ public class BookingServiceTest {
     @ParameterizedTest
     @CsvSource(value = {"ALL, 0, 2", "CURRENT, -2, 2", "PAST, -3, -1", "FUTURE, 2, 4", "WAITING, 0, 1", "REJECTED, 1, 3"})
     void getAllOwnerBookings_successfullyGetList(String state, int startTime, int endTime) {
-        when(BookingMapper.toBookingDto(any())).thenReturn(bookingDto);
-        LocalDateTime start = LocalDateTime.now().plusDays(startTime);
-        LocalDateTime end = LocalDateTime.now().plusDays(endTime);
-        Page<Booking> bookingPage = new PageImpl<>(bookings, PageRequest.of(0, 10), bookings.size());
-        bookingForParamTest.setBooker(user);
-        bookingForParamTest.setStart(start);
-        bookingForParamTest.setEnd(end);
 
-        when(itemRepository.findById(anyLong())).thenReturn(Optional.of(itemForParamTest));
-        when(userRepository.existsById(anyLong())).thenReturn(true);
-        when(bookingRepository.save(any())).thenReturn(bookingForParamTest);
-        when(bookingRepository.findByItemOwnerIdOrderByStartDesc(anyLong(), any())).thenReturn(bookingPage);
-        when(bookingRepository.findByItemOwnerIdAndStartIsBeforeAndEndIsAfterOrderByStartDesc(anyLong(),any(), any(), any())).thenReturn(bookingPage);
-        when(bookingRepository.findByItemOwnerIdAndEndIsBeforeOrderByStartDesc(anyLong(), any(), any())).thenReturn(bookingPage);
-        when(bookingRepository.findByItemOwnerIdAndStartIsAfterOrderByStartDesc(anyLong(), any(), any())).thenReturn(bookingPage);
-        when(bookingRepository.findByItemOwnerIdAndStartIsAfterAndStatusOrderByStartDesc(anyLong(), any(), any(), any())).thenReturn(bookingPage);
-        when(bookingRepository.findByItemOwnerIdAndStatusOrderByStartDesc(anyLong(), any(), any())).thenReturn(bookingPage);
+        try (MockedStatic<BookingMapper> mockedStatic = Mockito.mockStatic(BookingMapper.class)) {
+            mockedStatic.when(() -> BookingMapper.toBookingDto(any())).thenReturn(bookingDto);
+            LocalDateTime start = LocalDateTime.now().plusDays(startTime);
+            LocalDateTime end = LocalDateTime.now().plusDays(endTime);
+            Page<Booking> bookingPage = new PageImpl<>(bookings, PageRequest.of(0, 10), bookings.size());
+            bookingForParamTest.setBooker(user);
+            bookingForParamTest.setStart(start);
+            bookingForParamTest.setEnd(end);
 
-        List<BookingDto> bookings = bookingService.getAllOwnerBookings(user.getId(), state, 0, 10);
-        assertFalse(bookings.isEmpty());
-        assertEquals(bookings.get(0).getId(), 1L);
+            when(itemRepository.findById(anyLong())).thenReturn(Optional.of(itemForParamTest));
+            when(userRepository.existsById(anyLong())).thenReturn(true);
+            when(bookingRepository.save(any())).thenReturn(bookingForParamTest);
+            when(bookingRepository.findByItemOwnerIdOrderByStartDesc(anyLong(), any())).thenReturn(bookingPage);
+            when(bookingRepository.findByItemOwnerIdAndStartIsBeforeAndEndIsAfterOrderByStartDesc(anyLong(),any(), any(), any())).thenReturn(bookingPage);
+            when(bookingRepository.findByItemOwnerIdAndEndIsBeforeOrderByStartDesc(anyLong(), any(), any())).thenReturn(bookingPage);
+            when(bookingRepository.findByItemOwnerIdAndStartIsAfterOrderByStartDesc(anyLong(), any(), any())).thenReturn(bookingPage);
+            when(bookingRepository.findByItemOwnerIdAndStartIsAfterAndStatusOrderByStartDesc(anyLong(), any(), any(), any())).thenReturn(bookingPage);
+            when(bookingRepository.findByItemOwnerIdAndStatusOrderByStartDesc(anyLong(), any(), any())).thenReturn(bookingPage);
+
+            List<BookingDto> bookings = bookingService.getAllOwnerBookings(user.getId(), state, 0, 10);
+            assertFalse(bookings.isEmpty());
+            assertEquals(bookings.get(0).getId(), 1L);
+        }
     }
 
     @ParameterizedTest
     @CsvSource(value = {"ALL, 0, 2", "CURRENT, -2, 2", "PAST, -3, -1", "FUTURE, 2, 4", "WAITING, 0, 1", "REJECTED, 1, 3"})
     void getAllUserBookings_successfullyGetList(String state, int startTime, int endTime) {
-        when(BookingMapper.toBookingDto(any())).thenReturn(bookingDto);
-        LocalDateTime start = LocalDateTime.now().plusDays(startTime);
-        LocalDateTime end = LocalDateTime.now().plusDays(endTime);
-        Page<Booking> bookingPage = new PageImpl<>(bookings, PageRequest.of(0, 10), bookings.size());
-        bookingForParamTest.setBooker(user);
-        bookingForParamTest.setStart(start);
-        bookingForParamTest.setEnd(end);
+        try (MockedStatic<BookingMapper> mockedStatic = Mockito.mockStatic(BookingMapper.class)) {
+            mockedStatic.when(() -> BookingMapper.toBookingDto(any())).thenReturn(bookingDto);
+            LocalDateTime start = LocalDateTime.now().plusDays(startTime);
+            LocalDateTime end = LocalDateTime.now().plusDays(endTime);
+            Page<Booking> bookingPage = new PageImpl<>(bookings, PageRequest.of(0, 10), bookings.size());
+            bookingForParamTest.setBooker(user);
+            bookingForParamTest.setStart(start);
+            bookingForParamTest.setEnd(end);
 
-        when(itemRepository.findById(anyLong())).thenReturn(Optional.of(itemForParamTest));
-        when(userRepository.existsById(anyLong())).thenReturn(true);
-        when(bookingRepository.save(any())).thenReturn(bookingForParamTest);
-        when(bookingRepository.findByBookerIdOrderByStartDesc(anyLong(), any())).thenReturn(bookingPage);
-        when(bookingRepository.findByBookerIdAndStartIsBeforeAndEndIsAfterOrderByStartDesc(anyLong(),any(), any(), any())).thenReturn(bookingPage);
-        when(bookingRepository.findByBookerIdAndEndIsBeforeOrderByStartDesc(anyLong(), any(), any())).thenReturn(bookingPage);
-        when(bookingRepository.findByBookerIdAndEndIsBeforeOrderByStartDesc(anyLong(), any(), any())).thenReturn(bookingPage);
-        when(bookingRepository.findByBookerIdAndStartIsAfterOrderByStartDesc(anyLong(), any(), any())).thenReturn(bookingPage);
-        when(bookingRepository.findByBookerIdAndStartIsAfterAndStatusOrderByStartDesc(anyLong(), any(), any(), any())).thenReturn(bookingPage);
-        when(bookingRepository.findByBookerIdAndStatusOrderByStartDesc(anyLong(), any(), any())).thenReturn(bookingPage);
+            when(itemRepository.findById(anyLong())).thenReturn(Optional.of(itemForParamTest));
+            when(userRepository.existsById(anyLong())).thenReturn(true);
+            when(bookingRepository.save(any())).thenReturn(bookingForParamTest);
+            when(bookingRepository.findByBookerIdOrderByStartDesc(anyLong(), any())).thenReturn(bookingPage);
+            when(bookingRepository.findByBookerIdAndStartIsBeforeAndEndIsAfterOrderByStartDesc(anyLong(),any(), any(), any())).thenReturn(bookingPage);
+            when(bookingRepository.findByBookerIdAndEndIsBeforeOrderByStartDesc(anyLong(), any(), any())).thenReturn(bookingPage);
+            when(bookingRepository.findByBookerIdAndEndIsBeforeOrderByStartDesc(anyLong(), any(), any())).thenReturn(bookingPage);
+            when(bookingRepository.findByBookerIdAndStartIsAfterOrderByStartDesc(anyLong(), any(), any())).thenReturn(bookingPage);
+            when(bookingRepository.findByBookerIdAndStartIsAfterAndStatusOrderByStartDesc(anyLong(), any(), any(), any())).thenReturn(bookingPage);
+            when(bookingRepository.findByBookerIdAndStatusOrderByStartDesc(anyLong(), any(), any())).thenReturn(bookingPage);
 
-        List<BookingDto> bookings = bookingService.getAllUserBookings(user.getId(), state, 0, 10);
-        assertFalse(bookings.isEmpty());
-        assertEquals(bookings.get(0).getId(), 1L);
+            List<BookingDto> bookings = bookingService.getAllUserBookings(user.getId(), state, 0, 10);
+            assertFalse(bookings.isEmpty());
+            assertEquals(bookings.get(0).getId(), 1L);
+
+        }
     }
 
     @ParameterizedTest
