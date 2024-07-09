@@ -12,7 +12,6 @@ import ru.practicum.shareit.exception.AlreadyExistsException;
 import ru.practicum.shareit.exception.NotFoundException;
 import ru.practicum.shareit.exception.InvalidStateException;
 
-import java.util.logging.Logger;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @ExtendWith(MockitoExtension.class)
@@ -21,8 +20,8 @@ public class ErrorHandlerTest {
     @InjectMocks
     private ErrorHandler errorHandler;
 
-    @Mock
-    private Logger log;
+    //@Mock
+    //private Logger log;
 
     @Test
     void validationException_successfully() {
