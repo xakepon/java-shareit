@@ -5,7 +5,7 @@ import ru.practicum.shareit.item.model.Item;
 
 import java.util.Optional;
 
-public final class ItemMapper {
+public class ItemMapper {
     public static ItemDto toItemDto(Item item) {
         return item == null ? null : ItemDto.builder()
                 .id(item.getId())

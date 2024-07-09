@@ -14,8 +14,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @ExtendWith(MockitoExtension.class)
 public class ItemMapperTest {
 
-    @InjectMocks
-    private ItemMapper itemMapper;
+    //@InjectMocks
+    //private ItemMapper itemMapper;
 
     private static final Long ITEM_ID = 1L;
     private static final Long USER_ID = 1L;
@@ -27,7 +27,7 @@ public class ItemMapperTest {
 
     @Test
     void toItemDto_successfully() {
-        ItemDto actItemDto = itemMapper.toItemDto(item);
+        ItemDto actItemDto = ItemMapper.toItemDto(item);
         assertEquals(actItemDto.getId(), itemDto.getId());
         assertEquals(actItemDto.getName(), itemDto.getName());
         assertEquals(actItemDto.getAvailable(), itemDto.getAvailable());
@@ -37,7 +37,7 @@ public class ItemMapperTest {
 
     @Test
     void toItem_successfully() {
-        Item actItem = itemMapper.toItem(itemDto);
+        Item actItem = ItemMapper.toItem(itemDto);
         assertEquals(actItem.getId(), item.getId());
         assertEquals(actItem.getName(), item.getName());
         assertEquals(actItem.getAvailable(), item.getAvailable());
