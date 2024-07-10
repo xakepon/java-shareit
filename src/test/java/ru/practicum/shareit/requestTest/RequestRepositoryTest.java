@@ -24,21 +24,21 @@ import static org.assertj.core.api.Assertions.assertThat;
 @ExtendWith(SpringExtension.class)
 @DataJpaTest
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
-public class RequestRepositoryTest {
+class RequestRepositoryTest {
 
     @Autowired
-    private ItemRequestRepository itemRequestRepository;
+     ItemRequestRepository itemRequestRepository;
 
     @Autowired
-    private ItemRepository itemRepository;
+     ItemRepository itemRepository;
 
     @Autowired
-    private UserRepository userRepository;
+     UserRepository userRepository;
 
-    private static final Long REQUESTOR_ID = 1L;
-    private static final Long NON_REQUESTOR_ID = 99L;
-    private static final Long REQUEST_ID = 1L;
-    private static final Long ITEM_ID = 1L;
+     static final Long REQUESTOR_ID = 1L;
+     static final Long NON_REQUESTOR_ID = 99L;
+     static final Long REQUEST_ID = 1L;
+     static final Long ITEM_ID = 1L;
 
     @BeforeEach
     void setUp() {

@@ -12,12 +12,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
-public class CorsConfigTest {
+class CorsConfigTest {
     @Autowired
-    private MockMvc mockMvc;
+    MockMvc mockMvc;
 
     @Test
-    public void corsHeadersAreSet() throws Exception {
+    void corsHeadersAreSet() throws Exception {
         mockMvc.perform(get("/users")
                         .header("Origin", "http://localhost:8080"))
                 .andExpect(status().isOk())

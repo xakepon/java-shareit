@@ -34,26 +34,26 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
-public class UserControllerTest {
+class UserControllerTest {
 
     @Mock
-    private UserService userService;
+     UserService userService;
 
     @InjectMocks
-    private UserController controller;
+     UserController controller;
 
     @Mock
-    private UserRepository userRepository;
+     UserRepository userRepository;
 
-    private MockMvc mvc;
-    private final ObjectMapper mapper = new ObjectMapper();
+     MockMvc mvc;
+     final ObjectMapper mapper = new ObjectMapper();
 
-    private static final Long USER_ID = 1L;
-    private static final Long WRONG_ID = 10L;
+     static final Long USER_ID = 1L;
+     static final Long WRONG_ID = 10L;
 
-    private final UserDTO userDto = new UserDTO(USER_ID, "user", "user@user.user");
-    private final UserDTO wrongUserDto = new UserDTO(USER_ID, "", "user@user.user");
-    private final UserDTO updatedUserDto = new UserDTO(USER_ID, "updatedUser", "updatedUser@user.user");
+     final UserDTO userDto = new UserDTO(USER_ID, "user", "user@user.user");
+     final UserDTO wrongUserDto = new UserDTO(USER_ID, "", "user@user.user");
+     final UserDTO updatedUserDto = new UserDTO(USER_ID, "updatedUser", "updatedUser@user.user");
 
     @BeforeEach
     void setUp() {

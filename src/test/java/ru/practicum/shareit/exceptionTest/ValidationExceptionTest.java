@@ -3,7 +3,7 @@ package ru.practicum.shareit.exceptionTest;
 import org.junit.jupiter.api.Test;
 import ru.practicum.shareit.exception.ValidationException;
 
-public class ValidationExceptionTest {
+class ValidationExceptionTest {
 
     @Test
     void setNotValidData() {

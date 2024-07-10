@@ -21,8 +21,6 @@ public interface ItemService {
 
     CommentDTO createComment(Long itemId, Long userId, CommentDTO commentDto);
 
-    //ItemDto save(ItemDto itemDto, Long itemId, Long userId);
-
     ItemDto update(ItemDto itemDto, Long itemId, Long userId);
 
     ItemRequest getItemRequest(ItemDto itemDto);

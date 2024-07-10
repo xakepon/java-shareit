@@ -14,31 +14,22 @@ import java.time.LocalDateTime;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @ExtendWith(MockitoExtension.class)
-public class RequestMapperTest {
+class RequestMapperTest {
 
-   /* @Mock
-    private UserMapper userMapper;
-    @Mock
-    private ItemMapper itemMapper;*/
+     static final Long REQUEST_ID = 1L;
+     static final Long USER_ID = 1L;
 
-   // @InjectMocks
-    //private ItemRequestMapper itemRequestMapper;
+     final User user = new User(USER_ID, "user", "user@user.user");
+     final UserDTO userDto = new UserDTO(USER_ID, "user", "user@user.user");
 
-
-    private static final Long REQUEST_ID = 1L;
-    private static final Long USER_ID = 1L;
-
-    private final User user = new User(USER_ID, "user", "user@user.user");
-    private final UserDTO userDto = new UserDTO(USER_ID, "user", "user@user.user");
-
-    private final ItemRequest itemRequest = ItemRequest.builder()
+     final ItemRequest itemRequest = ItemRequest.builder()
             .id(REQUEST_ID)
             .description("description")
             .requestor(user)
             .created(LocalDateTime.now().minusMinutes(60))
             .items(null)
             .build();
-    private final ItemRequestDto itemRequestDto = ItemRequestDto.builder()
+     final ItemRequestDto itemRequestDto = ItemRequestDto.builder()
             .id(REQUEST_ID)
             .description("description")
             .requestor(userDto)

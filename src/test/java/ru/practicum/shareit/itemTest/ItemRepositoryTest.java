@@ -24,24 +24,24 @@ import static org.junit.jupiter.api.Assertions.*;
 @ExtendWith(SpringExtension.class)
 @DataJpaTest
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
-public class ItemRepositoryTest {
+class ItemRepositoryTest {
 
     @Autowired
-    private ItemRepository itemRepository;
+     ItemRepository itemRepository;
     @Autowired
-    private ItemRequestRepository itemRequestRepository;
+     ItemRequestRepository itemRequestRepository;
     @Autowired
-    private UserRepository userRepository;
+     UserRepository userRepository;
 
-    private static final Long OWNER_ID = 1L;
-    private static final Long NON_OWNER_ID = 99L;
-    private static final Long ITEM_ID = 1L;
-    private static final String SEARCH_TEXT = "Arduino";
-    private static final String NOT_FOUND_TEXT = "NotExist";
+     static final Long OWNER_ID = 1L;
+     static final Long NON_OWNER_ID = 99L;
+     static final Long ITEM_ID = 1L;
+     static final String SEARCH_TEXT = "Arduino";
+     static final String NOT_FOUND_TEXT = "NotExist";
 
-    private final User user = new User(OWNER_ID, "user", "user@user.user");
-    private final Item item = new Item(ITEM_ID, "Arduino", "Arduino", true, null, user, null, null, null);
-    private ItemRequest itemRequest;
+     final User user = new User(OWNER_ID, "user", "user@user.user");
+     final Item item = new Item(ITEM_ID, "Arduino", "Arduino", true, null, user, null, null, null);
+     ItemRequest itemRequest;
 
     @BeforeEach
     void setUp() {

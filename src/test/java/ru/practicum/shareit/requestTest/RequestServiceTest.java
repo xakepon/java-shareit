@@ -36,41 +36,35 @@ import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 @MockitoSettings(strictness = Strictness.LENIENT)
-public class RequestServiceTest {
+class RequestServiceTest {
 
     @Mock
-    private ItemRequestRepository itemRequestRepository;
+     ItemRequestRepository itemRequestRepository;
     @Mock
-    private ItemRepository itemRepository;
+     ItemRepository itemRepository;
     @Mock
-    private UserService userService;
-   //@Mock
-   //private ItemRequestMapper itemRequestMapper;
-    /*@Mock
-    private ItemMapper itemMapper;
-    @Mock
-    private UserMapper userMapper;*/
-
+     UserService userService;
+   
     @InjectMocks
-    private ItemRequestServiceImpl itemRequestService;
+     ItemRequestServiceImpl itemRequestService;
 
-    private static final Long USER_ID = 1L;
-    private static final Long ITEM_ID = 1L;
-    private static final Long REQUEST_ID = 1L;
+     static final Long USER_ID = 1L;
+     static final Long ITEM_ID = 1L;
+     static final Long REQUEST_ID = 1L;
 
     //User
-    private final User requestor = new User(USER_ID, "user", "user@user.user");
-    private final UserDTO requestorDto = new UserDTO(USER_ID, "user", "user@user.user");
+     final User requestor = new User(USER_ID, "user", "user@user.user");
+     final UserDTO requestorDto = new UserDTO(USER_ID, "user", "user@user.user");
     //Item
-    private final Item item = new Item(ITEM_ID, "item", "descriptionItem", true, null, requestor, null, null, null);
-    private final ItemDto itemDto = new ItemDto(ITEM_ID, USER_ID, "item", "descriptionItem", item.getAvailable(), null, null, requestor, null);
+     final Item item = new Item(ITEM_ID, "item", "descriptionItem", true, null, requestor, null, null, null);
+     final ItemDto itemDto = new ItemDto(ITEM_ID, USER_ID, "item", "descriptionItem", item.getAvailable(), null, null, requestor, null);
     //Request
-    private final ItemRequest itemRequest = new ItemRequest(REQUEST_ID, "description", requestor, LocalDateTime.now(), List.of(item));
-    private final ItemRequestDto itemRequestDto = new ItemRequestDto(REQUEST_ID, "description", requestorDto, itemRequest.getCreated(),  List.of(itemDto));
-    private final List<ItemRequest> itemRequestList = List.of(itemRequest);
-    private final List<ItemRequestDto> itemRequestDtoList = List.of(itemRequestDto);
+     final ItemRequest itemRequest = new ItemRequest(REQUEST_ID, "description", requestor, LocalDateTime.now(), List.of(item));
+     final ItemRequestDto itemRequestDto = new ItemRequestDto(REQUEST_ID, "description", requestorDto, itemRequest.getCreated(),  List.of(itemDto));
+     final List<ItemRequest> itemRequestList = List.of(itemRequest);
+     final List<ItemRequestDto> itemRequestDtoList = List.of(itemRequestDto);
 
-    private MockedStatic<ItemRequestMapper> mockedStatic;
+     MockedStatic<ItemRequestMapper> mockedStatic;
 
 
     @BeforeEach

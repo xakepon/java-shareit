@@ -14,13 +14,10 @@ import ru.practicum.shareit.exception.InvalidStateException;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @ExtendWith(MockitoExtension.class)
-public class ErrorHandlerTest {
+class ErrorHandlerTest {
 
     @InjectMocks
-    private ErrorHandler errorHandler;
-
-    //@Mock
-    //private Logger log;
+    ErrorHandler errorHandler;
 
     @Test
     void validationException_successfully() {

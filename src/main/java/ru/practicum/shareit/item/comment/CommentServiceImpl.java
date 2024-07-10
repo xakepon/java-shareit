@@ -36,10 +36,4 @@ public class CommentServiceImpl implements CommentService {
         log.info("Выполнение метода getAllComments с параметрами" + "itemDtoId:{} / comments:{}", itemId, comments);
         return comments;
     }
-
-   /* @Override
-    public void saveComment(Comment comment) {
-        commentRepository.save(comment);
-    }*/
-
 }

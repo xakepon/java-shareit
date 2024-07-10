@@ -14,15 +14,15 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @DataJpaTest
-public class UserRepositoriyTest {
+class UserRepositoriyTest {
 
     @Autowired
-    private UserRepository userRepository;
+     UserRepository userRepository;
 
-    private static final Long USER_ID = 1L;
-    private static final Long USER_ID_2 = 2L;
-    private User user;
-    private User user2;
+     static final Long USER_ID = 1L;
+     static final Long USER_ID_2 = 2L;
+     User user;
+     User user2;
 
     @BeforeEach
     void setUp() {

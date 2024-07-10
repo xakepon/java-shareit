@@ -32,26 +32,26 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
-public class BookingControllerTest {
+ class BookingControllerTest {
 
     @Autowired
-    private ObjectMapper mapper;
+    ObjectMapper mapper;
 
     @MockBean
-    private BookingService bookingService;
+    BookingService bookingService;
 
     @Autowired
-    private MockMvc mvc;
+    MockMvc mvc;
 
-    private static final Long USER_ID = 1L;
-    private static final Long ITEM_ID = 10L;
-    private static final Long BOOKING_ID = 1L;
-    private static final Long WRONG_ID = 10L;
-    private static final String OWNER_ID = "X-Sharer-User-Id";
+    static final Long USER_ID = 1L;
+    static final Long ITEM_ID = 10L;
+    static final Long BOOKING_ID = 1L;
+    static final Long WRONG_ID = 10L;
+    static final String OWNER_ID = "X-Sharer-User-Id";
 
-    private InputBookingDTO inputBookingDto;
-    private BookingDto bookingDto;
-    private List<BookingDto> bookingDtoList;
+    InputBookingDTO inputBookingDto;
+    BookingDto bookingDto;
+    List<BookingDto> bookingDtoList;
 
     @BeforeEach
     void setUp() {

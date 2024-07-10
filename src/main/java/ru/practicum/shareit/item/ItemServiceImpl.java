@@ -38,10 +38,6 @@ public class ItemServiceImpl implements ItemService {
     private UserService userService;
     private ItemRequestRepository itemRequestRepository;
     private CommentService commentService;
-    //private UserMapper userMapper;
-    //private ItemMapper itemMapper;
-    //private CommentMapper commentMapper;
-    //private BookingMapper bookingMapper;
 
     @Override
     public ItemDto create(ItemDto itemDto, Long userId) {

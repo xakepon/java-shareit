@@ -25,26 +25,26 @@ import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 @MockitoSettings(strictness = Strictness.LENIENT)
-public class CommentServiceTest {
+class CommentServiceTest {
 
     @Mock
-    private CommentRepository commentRepository;
+     CommentRepository commentRepository;
 
     @InjectMocks
-    private CommentServiceImpl commentService;
+     CommentServiceImpl commentService;
 
-    private static final Long COMMENT_ID = 1L;
-    private static final Long USER_ID = 1L;
-    private static final Long ITEM_ID = 1L;
-    private static final Long WRONG_ID = 10L;
+     static final Long COMMENT_ID = 1L;
+     static final Long USER_ID = 1L;
+     static final Long ITEM_ID = 1L;
+     static final Long WRONG_ID = 10L;
 
     //user
-    private final User user = new User(USER_ID, "user", "user@user.user");
+     final User user = new User(USER_ID, "user", "user@user.user");
     //item
-    private final Item item = new Item(ITEM_ID, "item", "descriptionItem", true, null, user, null, null, null);
+     final Item item = new Item(ITEM_ID, "item", "descriptionItem", true, null, user, null, null, null);
     //comment
-    private final Comment comment = new Comment(COMMENT_ID, "comment", item, user, LocalDateTime.now().minusMinutes(60));
-    private final List<Comment> commentList = List.of(comment);
+     final Comment comment = new Comment(COMMENT_ID, "comment", item, user, LocalDateTime.now().minusMinutes(60));
+     final List<Comment> commentList = List.of(comment);
 
     @BeforeEach
     void setUp() {

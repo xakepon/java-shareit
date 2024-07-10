@@ -17,31 +17,31 @@ import java.time.LocalDateTime;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @ExtendWith(MockitoExtension.class)
-public class CommentMapperTest {
+class CommentMapperTest {
 
 
-    private MockedStatic<ItemMapper> itemMapper;
+     MockedStatic<ItemMapper> itemMapper;
 
     @InjectMocks
-    private CommentMapper commentMapper;
+     CommentMapper commentMapper;
 
-    private static final Long COMMENT_ID = 1L;
-    private static final Long USER_ID = 1L;
-    private static final Long ITEM_ID = 1L;
-    private static final Long REQUEST_ID = 1L;
+     static final Long COMMENT_ID = 1L;
+     static final Long USER_ID = 1L;
+     static final Long ITEM_ID = 1L;
+     static final Long REQUEST_ID = 1L;
 
-    private final User user = new User(USER_ID, "user", "user@user.user");
-    private final Item item = new Item(ITEM_ID, "item", "descriptionItem", true, null, user, null, null, null);
-    private final ItemDto itemDto = new ItemDto(ITEM_ID, REQUEST_ID, "item", "descriptionItem", true, null, null, user, null);
+     final User user = new User(USER_ID, "user", "user@user.user");
+     final Item item = new Item(ITEM_ID, "item", "descriptionItem", true, null, user, null, null, null);
+     final ItemDto itemDto = new ItemDto(ITEM_ID, REQUEST_ID, "item", "descriptionItem", true, null, null, user, null);
 
-    private final Comment comment = Comment.builder()
+     final Comment comment = Comment.builder()
             .id(COMMENT_ID)
             .text("text")
             .item(item)
             .author(user)
             .created(LocalDateTime.now().minusMinutes(1))
             .build();
-    private final CommentDTO commentDto = CommentDTO.builder()
+     final CommentDTO commentDto = CommentDTO.builder()
             .id(COMMENT_ID)
             .text("text")
             .item(itemDto)

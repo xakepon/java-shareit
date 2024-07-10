@@ -24,24 +24,24 @@ import static org.hamcrest.Matchers.equalTo;
 @ExtendWith(SpringExtension.class)
 @DataJpaTest
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
-public class CommentRepositoryTest {
+class CommentRepositoryTest {
 
     @Autowired
-    private CommentRepository commentRepository;
+     CommentRepository commentRepository;
 
     @Autowired
-    private UserRepository userRepository;
+     UserRepository userRepository;
 
     @Autowired
-    private ItemRepository itemRepository;
+     ItemRepository itemRepository;
 
-    private static final Long USER_ID = 1L;
-    private static final Long ITEM_ID = 1L;
+     static final Long USER_ID = 1L;
+     static final Long ITEM_ID = 1L;
 
-    private User user;
-    private Item item;
-    private Comment comment1;
-    private Comment comment2;
+     User user;
+     Item item;
+     Comment comment1;
+     Comment comment2;
 
     @BeforeEach
     void setUp() {

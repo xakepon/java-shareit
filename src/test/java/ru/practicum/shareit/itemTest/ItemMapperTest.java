@@ -11,18 +11,15 @@ import ru.practicum.shareit.user.User;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @ExtendWith(MockitoExtension.class)
-public class ItemMapperTest {
+class ItemMapperTest {
 
-    //@InjectMocks
-    //private ItemMapper itemMapper;
+     static final Long ITEM_ID = 1L;
+     static final Long USER_ID = 1L;
+     static final Long REQUEST_ID = 1L;
 
-    private static final Long ITEM_ID = 1L;
-    private static final Long USER_ID = 1L;
-    private static final Long REQUEST_ID = 1L;
-
-    private final User user = new User(USER_ID, "user", "user@user.user");
-    private final Item item = new Item(ITEM_ID, "item", "descriptionItem", true, null, user, null, null, null);
-    private final ItemDto itemDto = new ItemDto(ITEM_ID, REQUEST_ID, "item", "descriptionItem", true, null, null, user, null);
+     final User user = new User(USER_ID, "user", "user@user.user");
+     final Item item = new Item(ITEM_ID, "item", "descriptionItem", true, null, user, null, null, null);
+     final ItemDto itemDto = new ItemDto(ITEM_ID, REQUEST_ID, "item", "descriptionItem", true, null, null, user, null);
 
     @Test
     void toItemDto_successfully() {

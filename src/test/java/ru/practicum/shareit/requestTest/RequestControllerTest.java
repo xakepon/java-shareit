@@ -32,7 +32,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
-public class RequestControllerTest {
+class RequestControllerTest {
 
     @Mock
     ItemRequestService service;
@@ -40,14 +40,14 @@ public class RequestControllerTest {
     @InjectMocks
     ItemRequestController controller;
 
-    private static final Long REQUEST_ID = 1L;
-    private static final Long USER_ID = 1L;
-    private final ObjectMapper mapper = new ObjectMapper();
-    private MockMvc mvc;
+     static final Long REQUEST_ID = 1L;
+     static final Long USER_ID = 1L;
+     final ObjectMapper mapper = new ObjectMapper();
+     MockMvc mvc;
 
-    private final ItemRequestDto itemRequestDto = ItemRequestDto.builder().id(REQUEST_ID).description("description").build();
-    private final ItemRequestDto itemRequestDto2 = ItemRequestDto.builder().id(REQUEST_ID).description("description").build();
-    private final List<ItemRequestDto> itemRequestDtoList = Arrays.asList(itemRequestDto, itemRequestDto2);
+     final ItemRequestDto itemRequestDto = ItemRequestDto.builder().id(REQUEST_ID).description("description").build();
+     final ItemRequestDto itemRequestDto2 = ItemRequestDto.builder().id(REQUEST_ID).description("description").build();
+     final List<ItemRequestDto> itemRequestDtoList = Arrays.asList(itemRequestDto, itemRequestDto2);
 
     @BeforeEach
     void setUp() {

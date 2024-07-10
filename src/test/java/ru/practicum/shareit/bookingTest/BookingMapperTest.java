@@ -23,27 +23,27 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @ExtendWith(MockitoExtension.class)
-public class BookingMapperTest {
+class BookingMapperTest {
 
-    private MockedStatic<UserMapper> userMapper;
+    MockedStatic<UserMapper> userMapper;
 
-    private MockedStatic<ItemMapper> itemMapper;
+    MockedStatic<ItemMapper> itemMapper;
 
-    private MockedStatic<BookingMapper> bookingMapper;
+    MockedStatic<BookingMapper> bookingMapper;
 
-    private static final Long ITEM_ID = 1L;
-    private static final Long USER_ID = 1L;
-    private static final Long BOOKING_ID = 1L;
-    private static final Long REQUEST_ID = 1L;
+    static final Long ITEM_ID = 1L;
+    static final Long USER_ID = 1L;
+    static final Long BOOKING_ID = 1L;
+    static final Long REQUEST_ID = 1L;
 
     //Users
-    private final User user = new User(USER_ID, "user", "user@user.user");
-    private final UserDTO userDto = new UserDTO(USER_ID, "user", "user@user.user");
+    final User user = new User(USER_ID, "user", "user@user.user");
+    final UserDTO userDto = new UserDTO(USER_ID, "user", "user@user.user");
     //Items
-    private final Item item = new Item(ITEM_ID, "item", "descriptionItem", true, null, user, null, null, null);
-    private final ItemDto itemDto = new ItemDto(ITEM_ID, REQUEST_ID, "item", "descriptionItem", true, null, null, user, null);
+    final Item item = new Item(ITEM_ID, "item", "descriptionItem", true, null, user, null, null, null);
+    final ItemDto itemDto = new ItemDto(ITEM_ID, REQUEST_ID, "item", "descriptionItem", true, null, null, user, null);
 
-    private final Booking booking = Booking.builder()
+    final Booking booking = Booking.builder()
             .id(BOOKING_ID)
             .start(LocalDateTime.now().minusDays(1))
             .end(LocalDateTime.now().plusDays(1))
@@ -51,7 +51,7 @@ public class BookingMapperTest {
             .booker(user)
             .status(BookingStatus.WAITING)
             .build();
-    private final BookingDto bookingDto = BookingDto.builder()
+    final BookingDto bookingDto = BookingDto.builder()
             .id(BOOKING_ID)
             .start(LocalDateTime.now().minusDays(1))
             .end(LocalDateTime.now().plusDays(1))
@@ -59,7 +59,7 @@ public class BookingMapperTest {
             .booker(userDto)
             .status(BookingStatus.WAITING)
             .build();
-    private final InputBookingDTO inputBookingDto = InputBookingDTO.builder()
+    final InputBookingDTO inputBookingDto = InputBookingDTO.builder()
             .itemId(ITEM_ID)
             .start(LocalDateTime.now().minusDays(1))
             .end(LocalDateTime.now().plusDays(1))

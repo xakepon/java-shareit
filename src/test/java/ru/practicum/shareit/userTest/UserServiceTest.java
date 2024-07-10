@@ -26,24 +26,24 @@ import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 @MockitoSettings(strictness = Strictness.LENIENT)
-public class UserServiceTest {
+class UserServiceTest {
 
     @Mock
-    private UserRepository userRepository;
+     UserRepository userRepository;
 
     @InjectMocks
-    private UserServiceImpl userService;
+     UserServiceImpl userService;
 
-    private static final Long USER_ID = 1L;
-    private static final Long WRONG_ID = 5L;
+     static final Long USER_ID = 1L;
+     static final Long WRONG_ID = 5L;
 
     //User
-    private final User user = new User(USER_ID, "user", "user@user.user");
-    private final User wrongUser = new User(WRONG_ID, null, null);
-    private final UserDTO userDto = new UserDTO(USER_ID, "user", "user@user.user");
-    private final UserDTO updatedUserDto = new UserDTO(USER_ID, "updatedUser", "user@user.user");
+     final User user = new User(USER_ID, "user", "user@user.user");
+     final User wrongUser = new User(WRONG_ID, null, null);
+     final UserDTO userDto = new UserDTO(USER_ID, "user", "user@user.user");
+     final UserDTO updatedUserDto = new UserDTO(USER_ID, "updatedUser", "user@user.user");
 
-    private MockedStatic<UserMapper> mockedStatic;
+     MockedStatic<UserMapper> mockedStatic;
 
     @BeforeEach
     void setUp() {

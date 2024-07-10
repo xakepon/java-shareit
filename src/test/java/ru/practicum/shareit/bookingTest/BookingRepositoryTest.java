@@ -27,21 +27,21 @@ import static ru.practicum.shareit.booking.BookingStatus.WAITING;
 @ExtendWith(SpringExtension.class)
 @DataJpaTest
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
-public class BookingRepositoryTest {
+class BookingRepositoryTest {
 
     @Autowired
-    private BookingRepository bookingRepository;
+    BookingRepository bookingRepository;
     @Autowired
-    private UserRepository userRepository;
+    UserRepository userRepository;
     @Autowired
-    private ItemRepository itemRepository;
+    ItemRepository itemRepository;
 
-    private static final Long USER_ID = 1L;
-    private static final Long BOOKER_ID = 2L;
-    private static final Long ITEM_ID = 1L;
-    private static final Long BOOKING_ID = 1L;
-    private Booking booking;
-    private Item item;
+    static final Long USER_ID = 1L;
+    static final Long BOOKER_ID = 2L;
+    static final Long ITEM_ID = 1L;
+    static final Long BOOKING_ID = 1L;
+    Booking booking;
+    Item item;
 
     @BeforeEach
     void setUp() {

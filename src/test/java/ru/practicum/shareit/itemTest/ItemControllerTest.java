@@ -31,26 +31,26 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
-public class ItemControllerTest {
+class ItemControllerTest {
 
     @MockBean
-    private ItemService itemService;
+     ItemService itemService;
     @Autowired
-    private ObjectMapper mapper;
+     ObjectMapper mapper;
     @Autowired
-    private MockMvc mvc;
+     MockMvc mvc;
 
-    private static final Long USER_ID = 1L;
-    private static final Long ITEM_ID = 1L;
-    private static final Long COMMENT_ID = 1L;
-    private static final Long REQUEST_ID = 1L;
-    private static final Long WRONG_ID = 100L;
+     static final Long USER_ID = 1L;
+     static final Long ITEM_ID = 1L;
+     static final Long COMMENT_ID = 1L;
+     static final Long REQUEST_ID = 1L;
+     static final Long WRONG_ID = 100L;
 
-    private final User user = new User(USER_ID, "user", "user@user.user");
-    private final ItemDto itemDto = new ItemDto(ITEM_ID, null, "item", "description", true, null, null, user, null);
-    private final ItemDto wrongItemDto = new ItemDto(ITEM_ID, REQUEST_ID, "", "description", false, null, null, user, null);
-    private final CommentDTO commentDto = new CommentDTO(COMMENT_ID, "text", itemDto, "author", LocalDateTime.now());
-    private final CommentDTO wrongCommentDto = new CommentDTO(COMMENT_ID, "", itemDto, "author", LocalDateTime.now());
+     final User user = new User(USER_ID, "user", "user@user.user");
+     final ItemDto itemDto = new ItemDto(ITEM_ID, null, "item", "description", true, null, null, user, null);
+     final ItemDto wrongItemDto = new ItemDto(ITEM_ID, REQUEST_ID, "", "description", false, null, null, user, null);
+     final CommentDTO commentDto = new CommentDTO(COMMENT_ID, "text", itemDto, "author", LocalDateTime.now());
+     final CommentDTO wrongCommentDto = new CommentDTO(COMMENT_ID, "", itemDto, "author", LocalDateTime.now());
 
     @Test
     void createItem_successfullyCreated() throws Exception {

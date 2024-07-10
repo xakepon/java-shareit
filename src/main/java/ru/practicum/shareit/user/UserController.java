@@ -30,12 +30,6 @@ public class UserController {
         return userService.getUsers();
     }
 
-    /*@PostMapping
-    public UserDTO addItem(@Validated @RequestBody UserDTO userDTO) {
-        log.info("Выполнен запрос на создание Item userDto {}", userDTO);
-        return userService.add(userDTO);
-    }*/
-
     @PostMapping
     public UserDTO createUser(@Validated @RequestBody UserDTO userDto) {
         log.info("Post-request createItem: userDto {}", userDto);

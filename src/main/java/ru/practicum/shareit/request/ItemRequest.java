@@ -38,5 +38,5 @@ public class ItemRequest {
     private LocalDateTime created;
 
     @Transient
-    List<Item> items;
+    protected List<Item> items;
 }

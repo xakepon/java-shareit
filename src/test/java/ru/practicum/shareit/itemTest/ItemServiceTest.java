@@ -49,63 +49,63 @@ import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 @MockitoSettings(strictness = Strictness.LENIENT)
-public class ItemServiceTest {
+class ItemServiceTest {
 
     @Mock
-    private ItemRepository itemRepository;
+     ItemRepository itemRepository;
     @Mock
-    private BookingRepository bookingRepository;
+     BookingRepository bookingRepository;
     @Mock
-    private UserService userService;
+     UserService userService;
     @Mock
-    private ItemRequestRepository itemRequestRepository;
+     ItemRequestRepository itemRequestRepository;
     @Mock
-    private CommentRepository commentRepository;
+     CommentRepository commentRepository;
     @Mock
-    private CommentService commentService;
+     CommentService commentService;
 
-    private MockedStatic<UserMapper> userMapper;
+     MockedStatic<UserMapper> userMapper;
 
-    private MockedStatic<ItemMapper> itemMapper;
+     MockedStatic<ItemMapper> itemMapper;
 
-    private MockedStatic<BookingMapper> bookingMapper;
+     MockedStatic<BookingMapper> bookingMapper;
 
-    private MockedStatic<ItemRequestMapper> itemRequestMapper;
+     MockedStatic<ItemRequestMapper> itemRequestMapper;
 
     @InjectMocks
-    private ItemServiceImpl itemService;
+     ItemServiceImpl itemService;
 
-    private CommentMapper commentMapper;
+     CommentMapper commentMapper;
 
-    private static final Long USER_ID = 1L;
-    private static final Long ITEM_ID = 1L;
-    private static final Long ITEM_ID_2 = 2L;
-    private static final Long REQUEST_ID = 1L;
-    private static final Long REQUEST_ID_2 = 2L;
-    private static final Long BOOKING_ID = 1L;
-    private static final Long COMMENT_ID = 1L;
-    private static final Long WRONG_USER_ID = 10L;
-    private static final Long WRONG_ITEM_ID = 10L;
+     static final Long USER_ID = 1L;
+     static final Long ITEM_ID = 1L;
+     static final Long ITEM_ID_2 = 2L;
+     static final Long REQUEST_ID = 1L;
+     static final Long REQUEST_ID_2 = 2L;
+     static final Long BOOKING_ID = 1L;
+     static final Long COMMENT_ID = 1L;
+     static final Long WRONG_USER_ID = 10L;
+     static final Long WRONG_ITEM_ID = 10L;
 
     //Users
-    private final User user = new User(USER_ID, "user", "user@user.user");
-    private final UserDTO userDto = new UserDTO(USER_ID, "user", "user@user.user");
+     final User user = new User(USER_ID, "user", "user@user.user");
+     final UserDTO userDto = new UserDTO(USER_ID, "user", "user@user.user");
     //Items
-    private final Item item = new Item(ITEM_ID, "item", "descriptionItem", true, null, user, null, null, null);
-    private final Item item2 = new Item(ITEM_ID_2, "item", "descriptionItem", true, null, user, null, null, null);
-    private final ItemDto itemDto = new ItemDto(ITEM_ID, REQUEST_ID_2, "item", "descriptionItem", true, null, null, user, null);
-    private final ItemDto itemDto2 = new ItemDto(ITEM_ID_2, REQUEST_ID, "item", "descriptionItem", true, null, null, user, null);
-    private final Item updatedItem = new Item(ITEM_ID, "name", "description", true, null, user, null, null, null);
-    private final ItemDto updatedItemDto = new ItemDto(ITEM_ID, REQUEST_ID, "name", "description", null, null, null, user, null);
+     final Item item = new Item(ITEM_ID, "item", "descriptionItem", true, null, user, null, null, null);
+     final Item item2 = new Item(ITEM_ID_2, "item", "descriptionItem", true, null, user, null, null, null);
+     final ItemDto itemDto = new ItemDto(ITEM_ID, REQUEST_ID_2, "item", "descriptionItem", true, null, null, user, null);
+     final ItemDto itemDto2 = new ItemDto(ITEM_ID_2, REQUEST_ID, "item", "descriptionItem", true, null, null, user, null);
+     final Item updatedItem = new Item(ITEM_ID, "name", "description", true, null, user, null, null, null);
+     final ItemDto updatedItemDto = new ItemDto(ITEM_ID, REQUEST_ID, "name", "description", null, null, null, user, null);
     //Requests
-    private final ItemRequest itemRequest = new ItemRequest(REQUEST_ID, "description", user, LocalDateTime.now(), List.of(item));
-    private final ItemRequestDto itemRequestDto = new ItemRequestDto(REQUEST_ID, "description", userDto, LocalDateTime.now(), List.of(itemDto));
+     final ItemRequest itemRequest = new ItemRequest(REQUEST_ID, "description", user, LocalDateTime.now(), List.of(item));
+     final ItemRequestDto itemRequestDto = new ItemRequestDto(REQUEST_ID, "description", userDto, LocalDateTime.now(), List.of(itemDto));
     //Bookings
-    private final Booking booking = new Booking(BOOKING_ID, LocalDateTime.now(), LocalDateTime.now().plusDays(1), item, user, BookingStatus.APPROVED);
-    private final List<Booking> bookingList = List.of(booking);
+     final Booking booking = new Booking(BOOKING_ID, LocalDateTime.now(), LocalDateTime.now().plusDays(1), item, user, BookingStatus.APPROVED);
+     final List<Booking> bookingList = List.of(booking);
     //Comments
-    private final Comment comment = new Comment(COMMENT_ID, "comment", item, user, LocalDateTime.now().minusMinutes(60));
-    private final CommentDTO commentDto = CommentDTO.builder().id(COMMENT_ID).text("comment").item(itemDto).authorName("user").build();
+     final Comment comment = new Comment(COMMENT_ID, "comment", item, user, LocalDateTime.now().minusMinutes(60));
+     final CommentDTO commentDto = CommentDTO.builder().id(COMMENT_ID).text("comment").item(itemDto).authorName("user").build();
 
     @Test
     void create_successfullyCreated() {

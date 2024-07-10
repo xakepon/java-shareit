@@ -11,15 +11,15 @@ import ru.practicum.shareit.user.UserMapper;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @ExtendWith(MockitoExtension.class)
-public class UserMapperTest {
+class UserMapperTest {
 
     @InjectMocks
-    private UserMapper userMapper;
+     UserMapper userMapper;
 
-    private static final Long USER_ID = 1L;
+     static final Long USER_ID = 1L;
 
-    private final User user = new User(USER_ID, "user", "user@user.user");
-    private final UserDTO userDto = new UserDTO(USER_ID, "user", "user@user.user");
+     final User user = new User(USER_ID, "user", "user@user.user");
+     final UserDTO userDto = new UserDTO(USER_ID, "user", "user@user.user");
 
     @Test
     void toUser_successfully() {

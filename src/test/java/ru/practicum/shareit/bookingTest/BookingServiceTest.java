@@ -45,53 +45,53 @@ import static org.mockito.Mockito.*;
 @ExtendWith(MockitoExtension.class)
 @MockitoSettings(strictness = Strictness.LENIENT)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
-public class BookingServiceTest {
+class BookingServiceTest {
 
     @Mock
-    private BookingRepository bookingRepository;
+    BookingRepository bookingRepository;
     @Mock
-    private ItemService itemService;
+    ItemService itemService;
     @Mock
-    private UserService userService;
+    UserService userService;
 
-    private MockedStatic<BookingMapper> bookingMapper;
+    MockedStatic<BookingMapper> bookingMapper;
 
     @InjectMocks
-    private BookingServiceImpl bookingService;
+    BookingServiceImpl bookingService;
 
-    private MockedStatic<ItemMapper> itemMapper;
-    private MockedStatic<UserMapper> userMapper;
+    MockedStatic<ItemMapper> itemMapper;
+    MockedStatic<UserMapper> userMapper;
 
     @Mock
-    private ItemRepository itemRepository;
+    ItemRepository itemRepository;
     @Mock
-    private UserRepository userRepository;
+    UserRepository userRepository;
 
-    private static final Long BOOKING_ID = 1L;
-    private static final Long ITEM_ID = 1L;
-    private static final Long USER_ID = 1L;
-    private static final Long OWNER_ID = 2L;
-    private static final Long BOOKER_ID = 3L;
-    private static final Long REQUEST_ID = 1L;
-    private static final Long WRONG_ID = 10L;
+    static final Long BOOKING_ID = 1L;
+    static final Long ITEM_ID = 1L;
+    static final Long USER_ID = 1L;
+    static final Long OWNER_ID = 2L;
+    static final Long BOOKER_ID = 3L;
+    static final Long REQUEST_ID = 1L;
+    static final Long WRONG_ID = 10L;
 
     //Users
-    private final User user = new User(USER_ID, "user", "user@user.user");
-    private final UserDTO userDto = new UserDTO(USER_ID, "user", "user@user.user");
-    private final User booker = new User(BOOKER_ID, "booker", "booker@booker.booker");
-    private final UserDTO bookerDto = new UserDTO(BOOKER_ID, "booker", "booker@booker.booker");
+     final User user = new User(USER_ID, "user", "user@user.user");
+     final UserDTO userDto = new UserDTO(USER_ID, "user", "user@user.user");
+     final User booker = new User(BOOKER_ID, "booker", "booker@booker.booker");
+     final UserDTO bookerDto = new UserDTO(BOOKER_ID, "booker", "booker@booker.booker");
     //Items
-    private final Item item = new Item(ITEM_ID, "item", "descriptionItem", true, null, user, null, null, null);
-    private final ItemDto itemDto = new ItemDto(ITEM_ID, REQUEST_ID, "item", "descriptionItem", true, null, null, user, null);
-    private final InputBookingDTO inputBookingDto = new InputBookingDTO(ITEM_ID, LocalDateTime.now().plusDays(1), LocalDateTime.now().plusDays(2));
+     final Item item = new Item(ITEM_ID, "item", "descriptionItem", true, null, user, null, null, null);
+     final ItemDto itemDto = new ItemDto(ITEM_ID, REQUEST_ID, "item", "descriptionItem", true, null, null, user, null);
+     final InputBookingDTO inputBookingDto = new InputBookingDTO(ITEM_ID, LocalDateTime.now().plusDays(1), LocalDateTime.now().plusDays(2));
     //Bookings
-    private final Booking booking = new Booking(BOOKING_ID, inputBookingDto.getStart(), inputBookingDto.getEnd(), item, booker, BookingStatus.WAITING);
-    private final BookingDto bookingDto = new BookingDto(BOOKING_ID, ITEM_ID, booking.getStart(), booking.getEnd(), itemDto, bookerDto, BookingStatus.APPROVED);
-    private final List<Booking> bookings = List.of(booking);
-    private final List<BookingDto> bookingDtoList = List.of(bookingDto);
+     final Booking booking = new Booking(BOOKING_ID, inputBookingDto.getStart(), inputBookingDto.getEnd(), item, booker, BookingStatus.WAITING);
+     final BookingDto bookingDto = new BookingDto(BOOKING_ID, ITEM_ID, booking.getStart(), booking.getEnd(), itemDto, bookerDto, BookingStatus.APPROVED);
+     final List<Booking> bookings = List.of(booking);
+     final List<BookingDto> bookingDtoList = List.of(bookingDto);
     //For ParameterizedTest
-    private final Item itemForParamTest = new Item(ITEM_ID, "item", "descriptionItem", true, null, booker, null, null, null);
-    private final Booking bookingForParamTest = new Booking(BOOKING_ID, inputBookingDto.getStart(), inputBookingDto.getEnd(), item, booker, BookingStatus.WAITING);
+     final Item itemForParamTest = new Item(ITEM_ID, "item", "descriptionItem", true, null, booker, null, null, null);
+     final Booking bookingForParamTest = new Booking(BOOKING_ID, inputBookingDto.getStart(), inputBookingDto.getEnd(), item, booker, BookingStatus.WAITING);
 
     @BeforeEach
     void setUp() {
