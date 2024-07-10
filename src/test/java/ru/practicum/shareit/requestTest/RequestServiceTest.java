@@ -44,7 +44,6 @@ class RequestServiceTest {
      ItemRepository itemRepository;
     @Mock
      UserService userService;
-   
     @InjectMocks
      ItemRequestServiceImpl itemRequestService;
 
