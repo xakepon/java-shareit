@@ -5,7 +5,7 @@ import ru.practicum.shareit.item.model.Item;
 
 import java.util.Optional;
 
-public final class ItemMapper {
+public class ItemMapper {
     public static ItemDto toItemDto(Item item) {
         return item == null ? null : ItemDto.builder()
                 .id(item.getId())
@@ -13,7 +13,7 @@ public final class ItemMapper {
                 .name(item.getName())
                 .description(item.getDescription())
                 .available(item.getAvailable())
-                .request(item.getItemRequest() != null ? item.getItemRequest().getId() : null)
+                .requestId(item.getItemRequest() != null ? item.getItemRequest().getId() : null)
                 .build();
     }
 
@@ -34,4 +34,5 @@ public final class ItemMapper {
         itemToUpdate.setAvailable(Optional.ofNullable(itemDto.getAvailable())
                 .orElse(itemToUpdate.getAvailable()));
     }
+
 }

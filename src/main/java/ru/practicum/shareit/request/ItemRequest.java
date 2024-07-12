@@ -3,10 +3,14 @@ package ru.practicum.shareit.request;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
+import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.user.User;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * TODO Sprint add-item-requests.
@@ -14,6 +18,7 @@ import java.time.LocalDateTime;
 @Data
 @Entity
 @AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "requests")
 @Builder
 public class ItemRequest {
@@ -28,6 +33,10 @@ public class ItemRequest {
     @JoinColumn(name = "requestor_id")
     private User requestor;
 
+    @CreationTimestamp
     @Column(name = "created")
     private LocalDateTime created;
+
+    @Transient
+    protected List<Item> items;
 }

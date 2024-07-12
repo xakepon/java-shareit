@@ -20,6 +20,8 @@ import java.util.List;
 public class ItemDto {
     private Long id;
 
+    private Long requestId;
+
     @NotBlank
     private String name;
 
@@ -28,8 +30,6 @@ public class ItemDto {
 
     @NotNull
     private Boolean available;
-
-    private Long request;
 
     private ShortBookingDTO lastBooking;
 

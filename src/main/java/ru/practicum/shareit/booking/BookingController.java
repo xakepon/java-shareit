@@ -7,6 +7,9 @@ import org.springframework.web.bind.annotation.*;
 import ru.practicum.shareit.booking.dto.BookingDto;
 import ru.practicum.shareit.booking.dto.InputBookingDTO;
 
+import javax.validation.Valid;
+import javax.validation.constraints.Positive;
+import javax.validation.constraints.PositiveOrZero;
 import java.util.List;
 
 /**
@@ -16,6 +19,7 @@ import java.util.List;
 @RestController
 @RequestMapping(path = "/bookings")
 @AllArgsConstructor
+@Validated
 public class BookingController {
     private static final String OWNER_ID = "X-Sharer-User-Id";
     private final BookingService service;
@@ -30,20 +34,24 @@ public class BookingController {
 
     @GetMapping
     public List<BookingDto> getAllUserBookings(@RequestParam(defaultValue = "ALL") String state,
-                                               @RequestHeader(OWNER_ID) Long userId) {
-        log.info("Запрос всех бронирований пользователелей: userId{}, state{}", userId, state);
-        return service.getAllUserBookings(userId, state);
+                                               @RequestHeader(OWNER_ID) Long userId,
+                                               @PositiveOrZero @RequestParam(defaultValue = "0") Integer from,
+                                               @Positive @RequestParam(defaultValue = "10") Integer size) {
+        log.info("Запрос всех бронирований пользователелей: userId{}, state{}, from={}, size={}", userId, state, from, size);
+        return service.getAllUserBookings(userId, state, from, size);
     }
 
     @GetMapping("/owner")
     public List<BookingDto> getAllOwnerBookings(@RequestParam(defaultValue = "ALL") String state,
-                                                @RequestHeader(OWNER_ID) Long owner) {
-        log.info("ПОлучить все бронирования владельцев: ownerId{}, state{}", owner, state);
-        return service.getAllOwnerBookings(owner, state);
+                                                @RequestHeader(OWNER_ID) Long userId,
+                                                @PositiveOrZero @RequestParam(defaultValue = "0") Integer from,
+                                                @Positive @RequestParam(defaultValue = "10") Integer size) {
+        log.info("Получить все бронирования владельцев: userId={}, state{}, from={}, size={}", userId, state, from, size);
+        return service.getAllOwnerBookings(userId, state, from, size);
     }
 
     @PostMapping
-    public BookingDto createBooking(@Validated @RequestBody InputBookingDTO inputBookingDto,
+    public BookingDto createBooking(@Valid @RequestBody InputBookingDTO inputBookingDto,
                                     @RequestHeader(OWNER_ID) Long userId) {
         log.info("Запрос на создание бронирования: userId{}, bookingDto{}", userId, inputBookingDto);
         return service.create(inputBookingDto, userId);

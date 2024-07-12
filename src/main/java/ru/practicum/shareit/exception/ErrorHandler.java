@@ -7,8 +7,8 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import ru.practicum.shareit.ErrorResponse;
 
-import javax.validation.ValidationException;
 
 @Slf4j
 @RestControllerAdvice
@@ -20,9 +20,9 @@ public class ErrorHandler {
         return new ErrorResponse(e.getMessage());
     }
 
-    @ExceptionHandler(ExistingCopyException.class)
+    @ExceptionHandler(AlreadyExistsException.class)
     @ResponseStatus(HttpStatus.CONFLICT)
-    public ErrorResponse alreadyExistExceptionHandler(ExistingCopyException e) {
+    public ErrorResponse alreadyExistExceptionHandler(AlreadyExistsException e) {
         log.error(e.getMessage());
         return new ErrorResponse(e.getMessage());
     }
@@ -47,6 +47,13 @@ public class ErrorHandler {
     @ExceptionHandler
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ErrorResponse throwableExceptionHandle(Throwable e) {
+        log.error(e.getMessage());
+        return new ErrorResponse(e.getMessage());
+    }
+
+    @ExceptionHandler(InvalidStateException.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public ErrorResponse invalidStateException(InvalidStateException e) {
         log.error(e.getMessage());
         return new ErrorResponse(e.getMessage());
     }
