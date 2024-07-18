@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "comments")
-@Builder(toBuilder = true)
+@Builder
 public class Comment {
 
     @Id

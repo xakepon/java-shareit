@@ -17,7 +17,7 @@ public class BookingController {
     @GetMapping("/{bookingId}")
     public BookingDTO getBooking(@PathVariable Long bookingId,
                                  @RequestHeader(OWNER_ID) Long userId) {
-        log.info("Get-request getBooking: userId{}, bookingId{}", userId, bookingId);
+        log.info("Запрос на бронирование userId{}, bookingId{}", userId, bookingId);
         return service.getById(userId, bookingId);
     }
 
@@ -26,7 +26,7 @@ public class BookingController {
                                                @RequestParam(defaultValue = "ALL") String state,
                                                @RequestParam(defaultValue = "0") Integer from,
                                                @RequestParam(defaultValue = "10") Integer size) {
-        log.info("Get-request getAllUserBookings: userId{}, state{}, from={}, size={}",
+        log.info("Запрос всех бронирований пользователелей: userId{}, state{}, from={}, size={}",
                 userId, state, from, size);
         return service.getAllUserBookings(userId, state, from, size);
     }
@@ -36,7 +36,7 @@ public class BookingController {
                                                 @RequestHeader(OWNER_ID) Long userId,
                                                 @RequestParam(defaultValue = "0") Integer from,
                                                 @RequestParam(defaultValue = "10") Integer size) {
-        log.info("Get-request getAllOwnerBookings: userId={}, state{}, from={}, size={}",
+        log.info("Получить все бронирования владельцев: userId={}, state{}, from={}, size={}",
                 userId, state, from, size);
         return service.getAllOwnerBookings(userId, state, from, size);
     }
@@ -44,7 +44,7 @@ public class BookingController {
     @PostMapping
     public BookingDTO createBooking(@RequestBody InputBookingDTO inputBookingDto,
                                     @RequestHeader(OWNER_ID) Long userId) {
-        log.info("Post-request createBooking: userId{}, bookingDto{}", userId, inputBookingDto);
+        log.info("Запрос на создание бронирования: userId{}, bookingDto{}", userId, inputBookingDto);
         return service.create(inputBookingDto, userId);
     }
 
@@ -52,7 +52,7 @@ public class BookingController {
     public BookingDTO approveBooking(@PathVariable Long bookingId,
                                      @RequestParam Boolean approved,
                                      @RequestHeader(OWNER_ID) Long userId) {
-        log.info("Path-request approveBooking: userId{}, bookingId{}, approve{}", userId, bookingId, approved);
+        log.info("Запрос на подтверждение бронирования: userId{}, bookingId{}, approve{}", userId, bookingId, approved);
         return service.approve(userId, bookingId, approved);
     }
 

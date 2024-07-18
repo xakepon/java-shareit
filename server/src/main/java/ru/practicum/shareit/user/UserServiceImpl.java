@@ -3,10 +3,11 @@ package ru.practicum.shareit.user;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.shareit.exception.AlreadyExistsException;
 import ru.practicum.shareit.exception.NotFoundException;
 
-import javax.transaction.Transactional;
+
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -17,36 +18,36 @@ import java.util.stream.Collectors;
 @Transactional
 public class UserServiceImpl implements UserService {
     private UserRepository repository;
-    private UserMapper userMapper;
 
     @Override
+    @Transactional(readOnly = true)
     public UserDTO getById(Long userId) {
-        UserDTO userDto = userMapper.toUserDTO(repository.findById(userId)
+        UserDTO userDto = UserMapper.toUserDTO(repository.findById(userId)
                 .orElseThrow(() -> new NotFoundException("fail: user/owner ID Not Found!")));
-        log.info("method: getById |Request/Response|" + " userId:{} / userId:{}", userId, userDto);
+        log.info("Запрос с данными" + " userId:{} / userId:{}", userId, userDto);
         return userDto;
     }
 
     @Override
     public UserDTO create(UserDTO userDto) {
-        User user = repository.save(userMapper.toUser(userDto));
-        UserDTO createdUserDto = userMapper.toUserDTO(user);
-        log.info("method: create |Request/Response|" + " userDto:{} / createdUser:{}", userDto, createdUserDto);
+        User user = repository.save(UserMapper.toUser(userDto));
+        UserDTO createdUserDto = UserMapper.toUserDTO(user);
+        log.info("Запрос на создание" + " userDto:{} / createdUser:{}", userDto, createdUserDto);
         return createdUserDto;
     }
 
     @Override
     public UserDTO update(UserDTO userDto, Long userId) {
-        User user = userMapper.toUser(getById(userId));
+        User user = UserMapper.toUser(getById(userId));
         Optional<User> existingUser = repository.findByIdNotAndEmail(userId, user.getEmail());
         if (existingUser.isPresent()) {
-            throw new AlreadyExistsException("fail: email Is Already Taken!");
+            throw new AlreadyExistsException("Ошибка - эл.почта уже используется");
         }
-        userMapper.updateUserDTO(userDto, user);
+        UserMapper.updateUserDTO(userDto, user);
         repository.save(user);
 
-        UserDTO updatedUserDto = userMapper.toUserDTO(user);
-        log.info("method: save |Request/Response|" + " userDto:{}, userId:{} / updatedUserDto:{}",
+        UserDTO updatedUserDto = UserMapper.toUserDTO(user);
+        log.info("выполнен метод save с параметрами" + " userDto:{}, userId:{} / updatedUserDto:{}",
                 userDto, userId, updatedUserDto);
         return updatedUserDto;
     }
@@ -54,15 +55,16 @@ public class UserServiceImpl implements UserService {
     @Override
     public void delete(Long userId) {
         repository.deleteById(userId);
-        log.info("method: delete |Request|" + " userId:{}", userId);
+        log.info("выполнен метод по удалению пользователя" + " userId:{}", userId);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<UserDTO> getAll() {
         List<UserDTO> usersDto = repository.findAll().stream()
-                .map(userMapper::toUserDTO)
+                .map(UserMapper::toUserDTO)
                 .collect(Collectors.toList());
-        log.info("method: getAll |Response|" + " list of users:{}", usersDto);
+        log.info("Выполнен метод по запросу всех пользователей" + "  из списка:{}", usersDto);
         return usersDto;
     }
 

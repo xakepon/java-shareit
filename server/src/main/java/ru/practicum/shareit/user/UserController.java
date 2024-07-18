@@ -17,32 +17,32 @@ public class UserController {
 
     @GetMapping("/{userId}")
     public UserDTO getUser(@PathVariable Long userId) {
-        log.info("Get-request getUser: userId {}", userId);
+        log.info("Выполнен запрос на получение userId {}", userId);
         return service.getById(userId);
     }
 
     @GetMapping
     public List<UserDTO> getAllUsers() {
-        log.info("Get-request getUsers");
+        log.info("Выполнен запрос на получение пользовтелей");
         return service.getAll();
     }
 
     @PostMapping
     public UserDTO createUser(@RequestBody UserDTO userDto) {
-        log.info("Post-request createItem: userDto {}", userDto);
+        log.info("Выполнен запрос createItem: userDto {}", userDto);
         return service.create(userDto);
     }
 
     @PatchMapping("/{userId}")
     public UserDTO updateUser(@RequestBody UserDTO userDto,
                               @PathVariable Long userId) {
-        log.info("Patch-request update: userID {}, userDto {}", userId, userDto);
+        log.info("Выполнен запрос на обновление UserDTO по userID {}", userId, userDto);
         return service.update(userDto, userId);
     }
 
     @DeleteMapping("/{userId}")
     public void deleteUser(@PathVariable Long userId) {
-        log.info("Delete-request delete: userId {}", userId);
+        log.info("Выполнен запрос на создание пользователя userId {}", userId);
         service.delete(userId);
     }
 

@@ -1,15 +1,13 @@
 package ru.practicum.shareit.item;
 
 import lombok.AllArgsConstructor;
-import org.springframework.stereotype.Component;
 
 import java.util.Optional;
 
-@Component
 @AllArgsConstructor
 public class ItemMapper {
 
-    public ItemDTO toItemDTO(Item item) {
+    public static ItemDTO toItemDTO(Item item) {
         return item == null ? null : ItemDTO.builder()
                 .id(item.getId())
                 .owner(item.getOwner())
@@ -29,7 +27,7 @@ public class ItemMapper {
                 .build();
     }
 
-    public void updateItemDTO(ItemDTO itemDto, Item itemToUpdate) {
+    public static void updateItemDTO(ItemDTO itemDto, Item itemToUpdate) {
         itemToUpdate.setName(Optional.ofNullable(itemDto.getName())
                 .orElse(itemToUpdate.getName()));
         itemToUpdate.setDescription(Optional.ofNullable(itemDto.getDescription())

@@ -17,7 +17,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "requests")
-@Builder(toBuilder = true)
+@Builder
 public class ItemRequest {
 
     @Id
@@ -36,6 +36,6 @@ public class ItemRequest {
     private LocalDateTime created;
 
     @Transient
-    List<Item> items;
+    protected List<Item> items;
 
 }

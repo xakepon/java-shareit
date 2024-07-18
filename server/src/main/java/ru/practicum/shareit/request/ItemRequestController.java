@@ -20,7 +20,7 @@ public class ItemRequestController {
     public List<ItemRequestDto> getOwnItemRequests(@RequestParam(defaultValue = "0") Integer from,
                                                    @RequestParam(defaultValue = "10") Integer size,
                                                    @RequestHeader(OWNER_ID) Long userId) {
-        log.info("Get-request getUserItemRequests: userId={}, from={}, size={}", userId, from, size);
+        log.info("Получен запрос getOwnItemRequests: userId={}, from={}, size={}", userId, from, size);
         return service.getOwnItemRequests(userId, from, size);
     }
 
@@ -28,21 +28,21 @@ public class ItemRequestController {
     public List<ItemRequestDto> getAllItemRequests(@RequestParam(defaultValue = "0") Integer from,
                                                    @RequestParam(defaultValue = "10") Integer size,
                                                    @RequestHeader(OWNER_ID) Long userId) {
-        log.info("Get-request getAllItemRequests: userId={}, from={}, size={}", userId, from, size);
+        log.info("Получен запрос getAllItemRequests: userId={}, from={}, size={}", userId, from, size);
         return service.getAllItemRequests(userId, from, size);
     }
 
     @GetMapping("/{requestId}")
     public ItemRequestDto getItemRequestById(@PathVariable Long requestId,
                                              @RequestHeader(OWNER_ID) Long userId) {
-        log.info("Get-request getItemRequest: requestId={}, userId={}", requestId, userId);
+        log.info("Получен запрос getItemRequest: requestId={}, userId={}", requestId, userId);
         return service.getById(requestId, userId);
     }
 
     @PostMapping
     public ItemRequestDto createItemRequest(@RequestBody ItemRequestDto itemRequestDto,
                                             @RequestHeader(OWNER_ID) Long userId) {
-        log.info("Post-request createItemRequest: userId={}, description={}", userId, itemRequestDto);
+        log.info("Получен запрос createItemRequest: userId={}, description={}", userId, itemRequestDto);
         return service.create(userId, itemRequestDto);
     }
 

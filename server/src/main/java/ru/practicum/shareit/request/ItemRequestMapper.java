@@ -1,7 +1,6 @@
 package ru.practicum.shareit.request;
 
 import lombok.AllArgsConstructor;
-import org.springframework.stereotype.Component;
 import ru.practicum.shareit.item.ItemDTO;
 import ru.practicum.shareit.item.ItemMapper;
 import ru.practicum.shareit.user.UserMapper;
@@ -10,35 +9,33 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Component
+
 @AllArgsConstructor
 public class ItemRequestMapper {
-    private UserMapper userMapper;
-    private ItemMapper itemMapper;
 
-    public ItemRequestDto toItemRequestDto(ItemRequest itemRequest) {
+    public static ItemRequestDto toItemRequestDto(ItemRequest itemRequest) {
         return ItemRequestDto.builder()
                 .id(itemRequest.getId())
                 .description(itemRequest.getDescription())
                 .created(itemRequest.getCreated())
-                .requestor(userMapper.toUserDTO(itemRequest.getRequestor()))
+                .requestor(UserMapper.toUserDTO(itemRequest.getRequestor()))
                 .items(mapItems(itemRequest))
                 .build();
     }
 
-    public ItemRequest toItemRequest(ItemRequestDto itemRequestDto) {
+    public static ItemRequest toItemRequest(ItemRequestDto itemRequestDto) {
         return itemRequestDto == null ? null : ItemRequest.builder()
                 .id(itemRequestDto.getId())
                 .description(itemRequestDto.getDescription())
-                .requestor(userMapper.toUser(itemRequestDto.getRequestor()))
+                .requestor(UserMapper.toUser(itemRequestDto.getRequestor()))
                 .created(itemRequestDto.getCreated())
                 .build();
     }
 
-    private List<ItemDTO> mapItems(ItemRequest itemRequest) {
+    private static List<ItemDTO> mapItems(ItemRequest itemRequest) {
         return itemRequest.getItems() != null ? itemRequest.getItems()
                 .stream()
-                .map(itemMapper::toItemDTO)
+                .map(ItemMapper::toItemDTO)
                 .collect(Collectors.toList()) : Collections.emptyList();
     }
 

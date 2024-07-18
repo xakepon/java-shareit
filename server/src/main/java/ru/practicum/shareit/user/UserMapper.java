@@ -1,13 +1,10 @@
 package ru.practicum.shareit.user;
 
-import org.springframework.stereotype.Component;
-
 import java.util.Optional;
 
-@Component
 public class UserMapper {
 
-    public User toUser(UserDTO userDto) {
+    public static User toUser(UserDTO userDto) {
         return userDto == null ? null : User.builder()
                 .id(userDto.getId())
                 .name(userDto.getName())
@@ -15,7 +12,7 @@ public class UserMapper {
                 .build();
     }
 
-    public UserDTO toUserDTO(User user) {
+    public static UserDTO toUserDTO(User user) {
         return user == null ? null : UserDTO.builder()
                 .id(user.getId())
                 .name(user.getName())
@@ -23,7 +20,7 @@ public class UserMapper {
                 .build();
     }
 
-    public void updateUserDTO(UserDTO userDto, User userToUpdate) {
+    public static void updateUserDTO(UserDTO userDto, User userToUpdate) {
         String updatedEmail = Optional.ofNullable(userDto.getEmail())
                 .filter(email -> email.contains("@"))
                 .orElse(userToUpdate.getEmail());
