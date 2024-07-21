@@ -1,6 +1,5 @@
 package ru.practicum.shareit.request;
 
-import lombok.AllArgsConstructor;
 import ru.practicum.shareit.item.ItemDTO;
 import ru.practicum.shareit.item.ItemMapper;
 import ru.practicum.shareit.user.UserMapper;
@@ -10,8 +9,10 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 
-@AllArgsConstructor
-public class ItemRequestMapper {
+public final class ItemRequestMapper {
+
+    private ItemRequestMapper() {
+    }
 
     public static ItemRequestDto toItemRequestDto(ItemRequest itemRequest) {
         return ItemRequestDto.builder()

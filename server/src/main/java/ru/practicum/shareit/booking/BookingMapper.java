@@ -1,14 +1,14 @@
 package ru.practicum.shareit.booking;
 
-import lombok.AllArgsConstructor;
 import ru.practicum.shareit.item.ItemDTO;
 import ru.practicum.shareit.item.ItemMapper;
 import ru.practicum.shareit.user.UserDTO;
 import ru.practicum.shareit.user.UserMapper;
 
+public final class BookingMapper {
 
-@AllArgsConstructor
-public class BookingMapper {
+    private BookingMapper() {
+    }
 
     public static BookingDTO toBookingDTO(Booking booking) {
         return booking == null ? null : BookingDTO.builder()

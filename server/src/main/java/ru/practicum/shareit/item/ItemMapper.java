@@ -1,11 +1,11 @@
 package ru.practicum.shareit.item;
 
-import lombok.AllArgsConstructor;
-
 import java.util.Optional;
 
-@AllArgsConstructor
-public class ItemMapper {
+public final class ItemMapper {
+
+    private ItemMapper() {
+    }
 
     public static ItemDTO toItemDTO(Item item) {
         return item == null ? null : ItemDTO.builder()

@@ -2,7 +2,10 @@ package ru.practicum.shareit.user;
 
 import java.util.Optional;
 
-public class UserMapper {
+public final class UserMapper {
+
+    private UserMapper() {
+    }
 
     public static User toUser(UserDTO userDto) {
         return userDto == null ? null : User.builder()

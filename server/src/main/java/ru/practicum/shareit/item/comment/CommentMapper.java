@@ -1,11 +1,12 @@
 package ru.practicum.shareit.item.comment;
 
-import lombok.AllArgsConstructor;
 import ru.practicum.shareit.item.ItemMapper;
 
 
-@AllArgsConstructor
-public class CommentMapper {
+public final class CommentMapper {
+
+    private CommentMapper() {
+    }
 
     public static CommentDTO toCommentDTO(Comment comment) {
         return comment == null ? null : CommentDTO.builder()
